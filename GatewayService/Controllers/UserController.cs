@@ -58,8 +58,8 @@ namespace GatewayService.Controllers
                 // Send a POST request to the login endpoint
                 HttpResponseMessage response = await client.PostAsJsonAsync("api/Users/register", model);
 
-                // Check if the response status code is 200 (OK)
-                if (response.StatusCode == HttpStatusCode.OK)
+                // Check if the response status code is 201 (Created)
+                if (response.StatusCode == HttpStatusCode.Created)
                 {
                     return Ok();
                 }
