@@ -22,7 +22,7 @@ namespace Front.Services
             UserCreateModel u = new UserCreateModel() { Email = email, Name = username, Password = password };
             var res = await _httpClient.PostAsJsonAsync<UserCreateModel>("api/User/register", u);
 
-            return res.IsSuccessStatusCode;
+            return res.;
 
 
         }
