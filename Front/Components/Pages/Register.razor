@@ -1,0 +1,29 @@
+﻿@page "/register"
+@inject ILogger<Register> register
+@inject NavigationManager NavigationManager
+@inject RegisterService registerService
+@inject AuthenticationStateProvider authStateProvider
+
+<EditForm Model="@userCreateModel" OnValidSubmit="HandleRegister">
+    <InputText @bind-Value="userCreateModel.Email" typeof="email"/>
+    <InputText @bind-Value="userCreateModel.Name" />
+    <InputText @bind-Value="userCreateModel.Password" type="password" />
+    <button type="submit">Register</button>
+</EditForm>
+
+@code {
+    private UserCreateModel userCreateModel = new UserCreateModel();
+
+
+    private async void HandleRegister()
+    {
+        
+    }
+
+    public class UserCreateModel
+    {
+        public string Password { get; set; } = "";
+        public string Name { get; set; } = "";
+        public string Email { get; set; } = "";
+    }
+}
