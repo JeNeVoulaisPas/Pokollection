@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 using UserService.Entities;
 
 namespace GatewayService.Controllers
@@ -68,6 +72,29 @@ namespace GatewayService.Controllers
                     return BadRequest("Register failed");
                 }
             }
+        }
+
+        private string GenerateJwtToken(int userId)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim("UserId", userId.ToString()) // add the user id as a claim
+            };
+
+            // create a key
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Fun fact: Ash's Pikachu name is Jean-Luc"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            // token configuration
+            var token = new JwtSecurityToken(
+                issuer: "Pokollection", // Who created this token
+                audience: "localhost:5000", // Who can use this token
+                claims: claims, // data inside the token
+                expires: DateTime.Now.AddMinutes(3000), // validity of the token
+                signingCredentials: creds); // key to encrypt the token
+
+            // return the token
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
     }

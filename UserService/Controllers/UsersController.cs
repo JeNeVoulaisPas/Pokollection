@@ -137,6 +137,12 @@ namespace UserService.Controllers
                 return NotFound();
             }
 
+            if (user.PasswordHash == null)
+            {
+                // User has no password
+                return Unauthorized();
+            }
+
             var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLogin.Pass);
 
             if (passwordVerificationResult == PasswordVerificationResult.Success)
@@ -147,7 +153,7 @@ namespace UserService.Controllers
             else
             {
                 // Passwords do not match, authentication failed
-                return NotFound();
+                return Unauthorized();
             }
         }
 
