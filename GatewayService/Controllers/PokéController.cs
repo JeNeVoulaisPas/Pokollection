@@ -55,7 +55,8 @@ namespace GatewayService.Controllers
         }
 
 
-        // POST: api/Poké/collection
+        // POST: api/Poké/collection -> /!\ MERGED WITH USER/REGISTER
+        /*
         [Authorize]
         [HttpPost("collection")]
         public async Task<IActionResult> CreateCollection() // create collection
@@ -70,11 +71,11 @@ namespace GatewayService.Controllers
 
                 HttpResponseMessage response = await client.PostAsync($"api/Poké/collection/{id}", null);
 
-                // Check if the response status code is 200 (OK)
-                if (response.IsSuccessStatusCode) return Created();
-                else return NotFound();
+                if (response.StatusCode == HttpStatusCode.OK) return Ok(); // Already exists
+                if (response.StatusCode == HttpStatusCode.Created) return Created(); // collection created
+                return NotFound(); // unexpected failure
             }
-        }
+        }*/
 
 
         // DELETE: api/Poké/collection

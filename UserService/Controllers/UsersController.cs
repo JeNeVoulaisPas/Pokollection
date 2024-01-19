@@ -106,14 +106,14 @@ namespace UserService.Controllers
 
             if (uExist != null)
             {
-                return BadRequest("User Name already exists");
+                return BadRequest("E1: User Name already exists");
             }
 
             uExist = await _context.User.FirstOrDefaultAsync(u => u.Email == user.Email);
 
             if (uExist != null)
             {
-                return BadRequest("User Email already used by another account");
+                return BadRequest("E2: User Email already used by another account");
             }
 
             user.PasswordHash = _passwordHasher.HashPassword(user, userPayload.Password);

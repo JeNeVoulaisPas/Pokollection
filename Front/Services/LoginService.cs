@@ -7,15 +7,9 @@ using System.Security.Claims;
 
 namespace Front.Services
 {
-    public class LoginService
+    public class LoginService: AuthService
     {
-        private readonly HttpClient _httpClient;
-
-        public LoginService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new System.Uri("http://localhost:5000/");
-        }
+        public LoginService(HttpClient httpClient) : base(httpClient) {}
 
         public async Task<UserDTO?> AuthenticateUser(string username, string password)
         {

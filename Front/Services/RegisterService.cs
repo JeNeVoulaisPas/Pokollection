@@ -7,14 +7,10 @@ using System.Security.Claims;
 
 namespace Front.Services
 {
-    public class RegisterService
+    public class RegisterService: AuthService
     {
-        private readonly HttpClient _httpClient;
-
-        public RegisterService(HttpClient httpClient)
+        public RegisterService(HttpClient httpClient) : base(httpClient)
         {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new System.Uri("http://localhost:5000/");
         }
 
         public async Task<bool> CreateUser(string email, string username, string password)
@@ -22,9 +18,7 @@ namespace Front.Services
             UserCreateModel u = new UserCreateModel() { Email = email, Name = username, Password = password };
             var res = await _httpClient.PostAsJsonAsync<UserCreateModel>("api/User/register", u);
 
-            return res.;
-
-
+            return res.IsSuccessStatusCode;
         }
     }
 }
