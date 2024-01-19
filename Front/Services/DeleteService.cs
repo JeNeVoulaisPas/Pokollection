@@ -6,23 +6,19 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using Front.Services;
 
-
 namespace Front.Services
 {
-    public class DeleteService
+    public class DeleteService : AuthService
     {
-        private readonly HttpClient _httpClient;
-        public CustomAuthenticationStateProvider state { get; set; }
-
-        public DeleteService(HttpClient httpClient)
+        public DeleteService(HttpClient httpClient) : base(httpClient)
         {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new System.Uri("http://localhost:5000/");
         }
 
-        public async Task<bool> DeleteAccount(int id)
+
+
+        public async Task<bool> DeleteAccount()
         {
-            var res = await _httpClient.DeleteAsync($"api/User/{id}");
+            var res = await _httpClient.DeleteAsync($"api/User");
             if (res.IsSuccessStatusCode)
             {
                 return true;

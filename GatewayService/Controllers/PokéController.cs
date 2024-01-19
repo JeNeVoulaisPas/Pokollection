@@ -79,6 +79,7 @@ namespace GatewayService.Controllers
 
 
         // DELETE: api/Poké/collection
+        /*
         [Authorize]
         [HttpDelete("collection")]
         public async Task<IActionResult> DeleteCollection() // delete collection
@@ -97,7 +98,7 @@ namespace GatewayService.Controllers
                 if (response.IsSuccessStatusCode) return Ok();
                 else return NotFound(await response.Content.ReadAsStringAsync());
             }
-        }
+        }*/
 
 
         // POST: api/Poké/collection/card/1

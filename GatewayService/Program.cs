@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +37,25 @@ builder.Services.AddSwaggerGen(option => {
 });
 builder.Services.AddHttpClient();
 
+builder.Services.AddAuthorization();
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "PetitMouCorporation"; // the french microsoft
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ClockSkew = TimeSpan.FromMinutes(600),
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidAudience = "localhost:5000",
+            ValidIssuer = "Pokollection",
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes("Fun fact: Ash's Pikachu name is Jean-Luc"))
+        };
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,6 +71,7 @@ if (app.Environment.IsDevelopment())
     app.MapSwagger().RequireAuthorization();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

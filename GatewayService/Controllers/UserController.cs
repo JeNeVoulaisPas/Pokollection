@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -54,27 +55,30 @@ namespace GatewayService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserCreateModel model)
         {
-            // Create an HttpClient instance using the factory
+      
             using (var client = _httpClientFactory.CreateClient())
             {
-                // Set the base address of the API you want to call
+          
                 client.BaseAddress = new System.Uri("http://localhost:5001/");
 
-                // Send a POST request to the login endpoint
+      
                 HttpResponseMessage response = await client.PostAsJsonAsync("api/Users/register", model);
 
-                // Check if the response status code is 201 (Created)
+         
                 if (response.StatusCode == HttpStatusCode.Created)
                 {
                     // Account created, now create a collection for the user
                     var user = await response.Content.ReadFromJsonAsync<UserDTO>();
                     if (user != null)
                     {
-                        client.BaseAddress = new System.Uri("http://localhost:5002/");
-                        response = await client.PostAsync($"api/Poké/collection/{user.Id}", null);
-                        if (!response.IsSuccessStatusCode) StatusCode((int)HttpStatusCode.ServiceUnavailable, "Gateway failed to connect to the collection server"); 
+                        using (var Pokéclient = _httpClientFactory.CreateClient())
+                        {
+                            Pokéclient.BaseAddress = new System.Uri("http://localhost:5002/");
+                            response = await Pokéclient.PostAsync($"api/Poké/collection/{user.Id}", null);
+                            if (!response.IsSuccessStatusCode) return StatusCode((int)HttpStatusCode.ServiceUnavailable, "Gateway failed to connect to the collection server");
+                        }
 
-                    } else StatusCode((int)HttpStatusCode.InternalServerError, "Register service returned incoherent results");
+                    } else return StatusCode((int)HttpStatusCode.InternalServerError, "Register service returned incoherent results");
 
                     return Created();
                 }
@@ -85,7 +89,35 @@ namespace GatewayService.Controllers
             }
         }
 
-        // TODO: merge delete account and delete collection
+        [Authorize]
+        [HttpDelete("")]
+        public async Task<IActionResult> Delete()
+        {
+            var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            if (UserId == null || !int.TryParse(UserId, out int id)) return Unauthorized();
+
+            using (var client = _httpClientFactory.CreateClient())
+            {
+
+                client.BaseAddress = new System.Uri("http://localhost:5001/");
+
+
+                HttpResponseMessage response = await client.DeleteAsync($"api/Users/{id}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    using (var Pokéclient = _httpClientFactory.CreateClient())
+                    {
+                        Pokéclient.BaseAddress = new System.Uri("http://localhost:5002/");
+
+                        response = await Pokéclient.DeleteAsync($"api/Poké/collection/{id}");
+                        if (!response.IsSuccessStatusCode) return StatusCode((int)HttpStatusCode.ServiceUnavailable, "Gateway failed to connect to the collection server");
+                        return Ok();
+                    }
+                }
+                else return StatusCode((int)HttpStatusCode.InternalServerError, "Register service returned incoherent results");
+            }
+        }
 
         private string GenerateJwtToken(int userId)
         {
@@ -109,30 +141,5 @@ namespace GatewayService.Controllers
             // return the token
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            // Create an HttpClient instance using the factory
-            using (var client = _httpClientFactory.CreateClient())
-            {
-                // Set the base address of the API you want to call
-                client.BaseAddress = new System.Uri("http://localhost:5001/");
-
-                // Send a POST request to the login endpoint
-                HttpResponseMessage response = await client.DeleteAsync($"api/Users/{id}");
-
-                // Check if the response status code is 200 (OK)
-                if (response.IsSuccessStatusCode)
-                {
-                    return Ok();
-                }
-                else
-                {
-                    return BadRequest("Login failed");
-                }
-            }
-        }
-
     }
 }

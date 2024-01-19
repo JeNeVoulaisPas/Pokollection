@@ -21,10 +21,10 @@
     private async Task HandleSuppression()
     {
 
-        var userId = await ((CustomAuthenticationStateProvider)authStateProvider).GetAuthenticationIdAsync();
+        deleteService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider);
 
         // Appeler la méthode DeleteAccount en passant l'ID de l'utilisateur
-        var result = await deleteService.DeleteAccount(userId);
+        var result = await deleteService.DeleteAccount();
 
         if (result)
         {
@@ -33,7 +33,6 @@
         }
         else
         {
-            Console.WriteLine(userId);
             // Gérer le cas où la suppression du compte a échoué
             // Peut-être afficher un message d'erreur
         }
