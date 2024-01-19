@@ -70,5 +70,29 @@ namespace GatewayService.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            // Create an HttpClient instance using the factory
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                // Set the base address of the API you want to call
+                client.BaseAddress = new System.Uri("http://localhost:5001/");
+
+                // Send a POST request to the login endpoint
+                HttpResponseMessage response = await client.DeleteAsync($"api/Users/{id}");
+
+                // Check if the response status code is 200 (OK)
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("Login failed");
+                }
+            }
+        }
+
     }
 }

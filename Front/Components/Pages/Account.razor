@@ -1,0 +1,72 @@
+﻿@page "/account"
+@inject NavigationManager NavigationManager
+@inject DeleteService deleteService
+@inject AuthenticationStateProvider authStateProvider
+@using System.Security.Claims
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <PageTitle>Mon compte</PageTitle>
+
+        <h1>Mon compte</h1>
+
+        <button class="btn btn-primary" @onclick="HandleSuppression">Supprimer le compte</button>
+    </Authorized>
+    <NotAuthorized>
+        Not Logged in
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private async Task HandleSuppression()
+    {
+
+        var userId = await ((CustomAuthenticationStateProvider)authStateProvider).GetAuthenticationIdAsync();
+
+        // Appeler la méthode DeleteAccount en passant l'ID de l'utilisateur
+        var result = await deleteService.DeleteAccount(userId);
+
+        if (result)
+        {
+            // Rediriger vers la page de connexion après la suppression du compte
+            NavigationManager.NavigateTo("/login");
+        }
+        else
+        {
+            Console.WriteLine(userId);
+            // Gérer le cas où la suppression du compte a échoué
+            // Peut-être afficher un message d'erreur
+        }
+    }
+}
+
+
+@*
+@page "/account"
+@inject NavigationManager NavigationManager
+@inject LoginService deleteService
+@inject AuthenticationStateProvider authStateProvider
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <PageTitle>Mon compte</PageTitle>
+
+        <h1>Mon compte</h1>
+
+        <button class="btn btn-primary" @onclick="HandleSuppression">Click me</button>
+    </Authorized>
+    <NotAuthorized>
+        Not Logged in
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private int currentCount = 0;
+
+    private void HandleSuppression()
+    {
+        var user = await deleteService.DeleteAccount();
+        NavigationManager.NavigateTo("/login");
+    }
+}
+*@

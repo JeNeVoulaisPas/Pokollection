@@ -18,7 +18,7 @@
     private async void HandleRegister()
     {
         var user = await registerService.CreateUser(userCreateModel.Email, userCreateModel.Name, userCreateModel.Password); //.Result
-        if (user)
+        if (user.IsSuccess)
         {
             NavigationManager.NavigateTo("/login");
         }
