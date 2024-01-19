@@ -11,6 +11,8 @@ namespace Front.Services
     {
         private ClaimsPrincipal _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
         private ProtectedLocalStorage _sessionStorage;
+        
+        public string? JWToken { get; private set; } = null;
 
         public CustomAuthenticationStateProvider(ProtectedLocalStorage protectedSessionStorage)
         {
@@ -19,6 +21,7 @@ namespace Front.Services
 
         public async Task<ClaimsPrincipal> MarkUserAsAuthenticated(UserDTO user)
         {
+            JWToken = user.Token;
             await _sessionStorage.SetAsync("User", user);
             var claims = new[] {
                 new Claim(ClaimTypes.Name, user.Name),
@@ -33,6 +36,7 @@ namespace Front.Services
         }
         public async Task<ClaimsPrincipal> Logout()
         {
+            JWToken = null;
             await _sessionStorage.DeleteAsync("User");
             _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
 
@@ -43,9 +47,10 @@ namespace Front.Services
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var userSession = await _sessionStorage.GetAsync<UserDTO>("User");
-            if(userSession.Success && userSession.Value != null)
+            if (userSession.Success && userSession.Value != null)
             {
                 var user = userSession.Value;
+                JWToken = user.Token; // update token
                 var claims = new[] {
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Role, "User")

@@ -16,14 +16,10 @@ namespace Front.Services
         public string ErrorMessage { get; set; }
     }
 
-    public class RegisterService
+    public class RegisterService: AuthService
     {
-        private readonly HttpClient _httpClient;
-
-        public RegisterService(HttpClient httpClient)
+        public RegisterService(HttpClient httpClient) : base(httpClient)
         {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new System.Uri("http://localhost:5000/");
         }
 
         public async Task<CreateUserResult> CreateUser(string email, string username, string password)

@@ -100,6 +100,22 @@ namespace UserService.Controllers
                 Email = userPayload.Email,
                 Name = userPayload.Name,
             };
+
+
+            var uExist = await _context.User.FirstOrDefaultAsync(u => u.Name == user.Name);
+
+            if (uExist != null)
+            {
+                return BadRequest("E1: User Name already exists");
+            }
+
+            uExist = await _context.User.FirstOrDefaultAsync(u => u.Email == user.Email);
+
+            if (uExist != null)
+            {
+                return BadRequest("E2: User Email already used by another account");
+            }
+
             user.PasswordHash = _passwordHasher.HashPassword(user, userPayload.Password);
 
             _context.User.Add(user);
@@ -121,6 +137,12 @@ namespace UserService.Controllers
                 return NotFound();
             }
 
+            if (user.PasswordHash == null)
+            {
+                // User has no password
+                return Unauthorized();
+            }
+
             var passwordVerificationResult = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, userLogin.Pass);
 
             if (passwordVerificationResult == PasswordVerificationResult.Success)
@@ -131,7 +153,7 @@ namespace UserService.Controllers
             else
             {
                 // Passwords do not match, authentication failed
-                return NotFound();
+                return Unauthorized();
             }
         }
 

@@ -17,6 +17,8 @@
 
     private async void HandleRegister()
     {
+        registerService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider);
+
         var user = await registerService.CreateUser(userCreateModel.Email, userCreateModel.Name, userCreateModel.Password); //.Result
         if (user.IsSuccess)
         {
