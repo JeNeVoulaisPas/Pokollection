@@ -25,17 +25,9 @@
 
         // Appeler la méthode DeleteAccount en passant l'ID de l'utilisateur
         var result = await deleteService.DeleteAccount();
+        deleteService.Logout();
+        NavigationManager.NavigateTo("/login");
 
-        if (result)
-        {
-            // Rediriger vers la page de connexion après la suppression du compte
-            NavigationManager.NavigateTo("/login");
-        }
-        else
-        {
-            // Gérer le cas où la suppression du compte a échoué
-            // Peut-être afficher un message d'erreur
-        }
     }
 }
 

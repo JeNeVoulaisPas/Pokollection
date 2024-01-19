@@ -1,0 +1,19 @@
+﻿@page "/search"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@using System.Security.Claims
+
+<AuthorizeView Roles="User">
+    <Authorized>
+        <PageTitle>Recherche</PageTitle>
+
+        <h1>Recherche</h1>
+
+    </Authorized>
+    <NotAuthorized>
+        Not Logged in
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+}
