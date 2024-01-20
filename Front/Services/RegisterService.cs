@@ -13,7 +13,7 @@ namespace Front.Services
     public class CreateUserResult
     {
         public bool IsSuccess { get; set; }
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
     }
 
     public class RegisterService: AuthService

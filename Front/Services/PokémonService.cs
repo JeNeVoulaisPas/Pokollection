@@ -13,15 +13,51 @@ namespace Front.Services
     public class PokémonService: AuthService
     {
 
-
         public PokémonService(HttpClient httpClient) : base(httpClient) { }
 
-        public async Task<Pokémon?> GetPokémon(int id)
+        public async Task<Pokémon?> GetPokémon(string id)
         {
             var res = await _httpClient.GetAsync($"api/Poké/card/{id}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<Pokémon>();
             return null;
+        }
+
+        public async Task<IEnumerable<Pokémon>?> Search(string query)
+        {
+            var res = await _httpClient.GetAsync($"api/Poké/search{query}");
+
+            if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
+            return null;
+        }
+
+        public async Task<IEnumerable<Pokémon>?> GetCollection(int? id = null)
+        {
+            if (id == null)
+            {
+                if (_auth == null) return null;
+                id = await _auth.GetAuthenticationIdAsync();
+            }
+            if (id == -1) return null;
+
+            var res = await _httpClient.GetAsync($"api/Poké/collection/{id}/card");
+
+            if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
+            return null;
+        }
+
+        public async Task<bool> AddCard(int cid)
+        {
+            var res = await _httpClient.PostAsync($"api/Poké/collection/card/{cid}", null);
+
+            return res.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> DeleteCard(int cid)
+        {
+            var res = await _httpClient.DeleteAsync($"api/Poké/collection/card/{cid}");
+
+            return res.IsSuccessStatusCode;
         }
     }
 }

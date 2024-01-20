@@ -1,0 +1,14 @@
+﻿@inject NavigationManager NavigationManager
+@using PokéService.Entities;
+
+<img src="@(pokémon.Image)"/>
+<h3>@(pokémon.Name)</h3>
+
+@code {
+	[Parameter] public required Pokémon pokémon { get; set; }
+
+	public void OnClick()
+	{
+		NavigationManager.NavigateTo($"/pokémon/{pokémon.Id}");
+	}
+}
