@@ -30,34 +30,3 @@
 
     }
 }
-
-
-@*
-@page "/account"
-@inject NavigationManager NavigationManager
-@inject LoginService deleteService
-@inject AuthenticationStateProvider authStateProvider
-
-<AuthorizeView Roles="User">
-    <Authorized>
-        <PageTitle>Mon compte</PageTitle>
-
-        <h1>Mon compte</h1>
-
-        <button class="btn btn-primary" @onclick="HandleSuppression">Click me</button>
-    </Authorized>
-    <NotAuthorized>
-        Not Logged in
-    </NotAuthorized>
-</AuthorizeView>
-
-@code {
-    private int currentCount = 0;
-
-    private void HandleSuppression()
-    {
-        var user = await deleteService.DeleteAccount();
-        NavigationManager.NavigateTo("/login");
-    }
-}
-*@

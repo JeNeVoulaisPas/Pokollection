@@ -1,17 +1,17 @@
-﻿@page "/search"
+﻿@page "/collect"
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authStateProvider
 @using System.Security.Claims
 
 <AuthorizeView Roles="User">
     <Authorized>
-        <PageTitle>Recherche</PageTitle>
+        <PageTitle>Collection</PageTitle>
 
-        <h1>Recherche</h1>
+        <h1>Collection de @context.User.Identity.Name</h1>
 
     </Authorized>
     <NotAuthorized>
-        <h1> Recherche </h1>
+        Not logged in
     </NotAuthorized>
 </AuthorizeView>
 
