@@ -32,7 +32,7 @@ namespace PokéService.Controllers
 
         // GET: api/Poké/collection/5/card
         [HttpGet("collection/{id}/card")]
-        public async Task<ActionResult<Pokémon[]>> GetPokémonCollection(int id) // get all cards data
+        public async Task<ActionResult<IEnumerable<Pokémon>>> GetPokémonCollection(int id) // get all cards data
         {
             var c = await _context.CardsCollection.FindAsync(id);
 
@@ -126,7 +126,7 @@ namespace PokéService.Controllers
 
         // GET: api/Poké/search?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
         [HttpGet("search")]
-        public ActionResult<Pokémon[]> SearchCard(
+        public ActionResult<IEnumerable<Pokémon>> SearchCard(
             string? name = null,
             string? set = null,
             Categories? category = null,
@@ -138,10 +138,11 @@ namespace PokéService.Controllers
             int limit = 50,
             int offset = 0)
         {
+            Console.WriteLine($">>{category}");
             var pkmns = _context.Pokémon.AsQueryable();
             if (pkmns == null) return NotFound();
-            if (name != null) pkmns = pkmns.Where(p => p.Name.ToLower().StartsWith(name.ToLower()) ||      // check name start: "Pika" -> "Pikachu"
-                                                       p.Name.ToLower().StartsWith(' ' + name.ToLower())); // check subwords starts: "Pika" -> "Trainer's Pikachu"
+            if (name != null) pkmns = pkmns.Where(p => p.Name.ToLower().StartsWith(name.ToLower()) ||    // check name start: "Pika" -> "Pikachu"
+                                                       p.Name.ToLower().Contains(' ' + name.ToLower())); // check subwords starts: "Pika" -> "Trainer's Pikachu"
             if (set != null) pkmns = pkmns.Where(p => p.Set == set);
             if (category != null) pkmns = pkmns.Where(p => p.Category == category);
             if (lid != null) pkmns = pkmns.Where(p => p.LocalId == lid);

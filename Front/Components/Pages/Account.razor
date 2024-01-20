@@ -25,7 +25,7 @@
 
         // Appeler la méthode DeleteAccount en passant l'ID de l'utilisateur
         var result = await deleteService.DeleteAccount();
-        deleteService.Logout();
+        //await deleteService.Logout();
         NavigationManager.NavigateTo("/login");
 
     }

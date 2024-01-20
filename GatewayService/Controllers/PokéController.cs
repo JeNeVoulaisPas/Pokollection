@@ -6,7 +6,9 @@ using System.Net;
 
 namespace GatewayService.Controllers
 {
-    
+
+    [Route("api/[controller]")]
+    [ApiController]
     public class PokéController : Controller
     {
 
@@ -49,7 +51,7 @@ namespace GatewayService.Controllers
                 HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/{id}/card");
 
                 // Check if the response status code is 200 (OK)
-                if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<Pokémon[]>());
+                if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
                 else return NotFound(await response.Content.ReadAsStringAsync());
             }
         }
@@ -193,7 +195,7 @@ namespace GatewayService.Controllers
                     $"api/Poké/search{arg}"); // fast forward query argument
 
                 // Check if the response status code is 200 (OK)
-                if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<Pokémon[]>());
+                if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
                 else return NotFound(await response.Content.ReadAsStringAsync());
                 // avoid deserialize+reserialize ?? -> return Content(await apiResponse.Content.ReadAsStringAsync(), apiResponse.Content.Headers.ContentType.MediaType);
             }

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GatewayService", "GatewaySe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Front", "Front\Front.csproj", "{B5785C2C-8768-49D4-80DB-7E3EF605800A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokéService", "PokéService\PokéService.csproj", "{AC848EDD-2C27-41E4-9ED4-1A71B820FCBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PokéService", "PokéService\PokéService.csproj", "{AC848EDD-2C27-41E4-9ED4-1A71B820FCBB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

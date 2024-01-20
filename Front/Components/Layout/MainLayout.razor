@@ -12,11 +12,11 @@
         <div class="top-row px-4">
             <AuthorizeView>
                 <Authorized>
-                    <p>Hello, @context.User.Identity.Name !</p>
-                    <a @onclick="Logout">Logout</a>
+                    <p>Salut, @context.User.Identity?.Name !</p>
+                    <a @onclick="Logout">Se Déconnecter</a>
                 </Authorized>
                 <NotAuthorized>
-                    <p>You're not connected.</p>
+                    <a @onclick="Login">Se Connecter</a>
                 </NotAuthorized>
             </AuthorizeView>
             
@@ -43,6 +43,10 @@
         await deleteService.Logout();
         // Redirect the user to the login page
         NavigationManager.NavigateTo("/login");
-        
+    }
+
+    private void Login()
+    {
+        NavigationManager.NavigateTo("/login");
     }
 }
