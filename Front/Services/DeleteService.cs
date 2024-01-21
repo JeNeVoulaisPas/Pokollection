@@ -32,14 +32,18 @@ namespace Front.Services
             }
         }
 
-        public async Task<bool> Logout()
+        public async Task Logout()
         {
             if (_auth != null)
             {
+                Console.WriteLine("Logout");
                 await _auth.Logout();
-                return true;
             }
-            return false;
+            else
+            {
+                Console.WriteLine("Logout failed");
+            }
+            
         }
     }
 }

@@ -9,10 +9,16 @@
     <InputText @bind-Value="userCreateModel.Name" />
     <InputText @bind-Value="userCreateModel.Password" type="password" />
     <button type="submit">Register</button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="error">@errorMessage</p>
+    }
 </EditForm>
 
 @code {
     private UserCreateModel userCreateModel = new UserCreateModel();
+    private string errorMessage = "";
 
 
     private async void HandleRegister()
@@ -26,7 +32,7 @@
         }
         else
         {
-            // Handle failed authentication
+            errorMessage = user.ErrorMessage;
         }
     }
 

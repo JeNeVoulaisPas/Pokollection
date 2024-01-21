@@ -8,16 +8,21 @@
     <InputText @bind-Value="loginModel.Username" />
     <InputText @bind-Value="loginModel.Password" type="password" />
     <button type="submit">Login</button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="error">@errorMessage</p>
+    }
 </EditForm>
 
 @code {
     private LoginModel loginModel = new LoginModel();
-
+    private string errorMessage = ""; 
 
     private async void HandleLogin()
     {
         loginService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider);
-        var user = await loginService.AuthenticateUser(loginModel.Username, loginModel.Password); //.Result
+        var user = await loginService.AuthenticateUser(loginModel.Username, loginModel.Password);
         if (user != null)
         {
             var userClaim = await ((CustomAuthenticationStateProvider)authStateProvider).MarkUserAsAuthenticated(user);
@@ -26,7 +31,7 @@
         }
         else
         {
-            // Handle failed authentication
+            errorMessage = "Echec de l'authentification. Veuillez verifier votre nom d'utilisateur et votre mot de passe.";
         }
     }
 

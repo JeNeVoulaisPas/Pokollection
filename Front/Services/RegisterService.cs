@@ -25,12 +25,23 @@ namespace Front.Services
         public async Task<CreateUserResult> CreateUser(string email, string username, string password)
         {
             var emailValidationAttribute = new EmailAddressAttribute();
-            // Vérification du format de l'e-mail avec une regex
+          
             if (!emailValidationAttribute.IsValid(email))
             {
-                // Le format de l'e-mail n'est pas valide
+                
                 return new CreateUserResult { IsSuccess = false, ErrorMessage = "Format d'e-mail non valide." };
             }
+
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return new CreateUserResult { IsSuccess = false, ErrorMessage = "Le nom d'utilisateur ne peut pas être vide." };
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return new CreateUserResult { IsSuccess = false, ErrorMessage = "Le mot de passe ne peut pas être vide." };
+            }
+
 
             UserCreateModel u = new UserCreateModel() { Email = email, Name = username, Password = password };
             var res = await _httpClient.PostAsJsonAsync<UserCreateModel>("api/User/register", u);
@@ -41,13 +52,13 @@ namespace Front.Services
             }
             else
             {
-                // Récupérez le message d'erreur du serveur en cas d'échec de la requête HTTP
+              
                 var errorMessage = await res.Content.ReadAsStringAsync();
 
-                // Retournez le message d'erreur au front-end
                 return new CreateUserResult { IsSuccess = false, ErrorMessage = errorMessage };
             }
         }
+
 
         /*
         private bool IsValidEmail(string email)
@@ -59,6 +70,7 @@ namespace Front.Services
         }
         */
     }
+
 }
 
 
