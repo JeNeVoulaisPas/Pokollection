@@ -33,6 +33,15 @@ namespace UserService.Controllers
                 .ToListAsync();
         }
 
+        // DELETE: api/Users
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAllUsers()
+        {
+            foreach (var c in _context.User) _context.User.Remove(c);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
         // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDTO>> GetUser(int id)

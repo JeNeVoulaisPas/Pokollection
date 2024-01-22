@@ -23,7 +23,7 @@ namespace Front.Services
             return null;
         }
 
-        public async Task<IEnumerable<Pokémon>?> Search(string query)
+        public async Task<IEnumerable<Pokémon>?> Search(string query = "")
         {
             var res = await _httpClient.GetAsync($"api/Poké/search{query}");
 
@@ -31,7 +31,7 @@ namespace Front.Services
             return null;
         }
 
-        public async Task<IEnumerable<Pokémon>?> GetCollection(int? id = null)
+        public async Task<IEnumerable<Pokémon>?> GetCollection(string query = "", int? id = null)
         {
             if (id == null)
             {
@@ -40,7 +40,7 @@ namespace Front.Services
             }
             if (id == -1) return null;
 
-            var res = await _httpClient.GetAsync($"api/Poké/collection/{id}/card");
+            var res = await _httpClient.GetAsync($"api/Poké/collection/{id}/card{query}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
             return null;
