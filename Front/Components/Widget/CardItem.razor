@@ -2,13 +2,54 @@
 @using PokéService.Entities;
 
 <div class="card mb-4">
-	<img src="@(pokémon.Image)"/>
+	<div class="card-ratio">
+		<img id="card-@(id)" src="@(url)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon.Name)" @onload="Loaded">
+		@if (loading)
+		{
+			<div id="spinner-@(id)" class="spinner-border text-primary" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		}
+	</div>
+	
+	
 	<h3>@(pokémon.Name)</h3>
 </div>
 
+
 @code {
-	[Parameter] public required Pokémon pokémon { get; set; }
+	[Parameter] public required Pokémon pokémon {
+		get { return _pk; }
+		set { Loading(value); _pk = value; }
+	}
 	[Parameter] public required bool Addable { get; set; }
+
+	static int count = 0;
+
+	private int id;
+	public required Pokémon _pk;
+	public bool loading = false;
+	public string url = "";
+
+	public void Loading(Pokémon pk)
+	{
+		loading = _pk?.Image != pk.Image;
+		if (loading) {
+			url = pk.Image;
+		}
+	}
+
+	public void Loaded()
+	{
+		url = pokémon.Image;
+		loading = false;
+	}
+
+	protected override void OnInitialized()
+	{
+		id = count++;
+	}
+
 
 	public void OnClick()
 	{

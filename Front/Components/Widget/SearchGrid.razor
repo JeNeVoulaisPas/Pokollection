@@ -181,7 +181,7 @@
 </label>
 
 <label>
-    <button class="form-control" @onclick="SearchClear">Rechercher</button>
+    <button class="form-control" @onclick="SearchButton">Rechercher</button>
 </label>
 
 
@@ -244,21 +244,19 @@
     private int? lastHash { get; set; }
 
 
-    public async Task SearchClear()
+    public async Task SearchButton()
     {
-        Console.WriteLine("SearchClear");
-        await Search(true);
+        await Search();
     }
 
     public async Task Search(bool reset = false)
     {
         Console.WriteLine("SearchClear");
         var h = Name?.GetHashCode() + Category?.GetHashCode() + Type1?.GetHashCode() + Type2?.GetHashCode() + Set?.GetHashCode();
-        bool clear = false;
+        bool clear = reset || h != lastHash;
 
-        if (reset || h != lastHash)
+        if (clear)
         {
-            clear = true;
             Page = 0; // if research terms change, reset page
             lastHash = h;
         }
@@ -280,7 +278,7 @@
 
             if (clear)
             {
-                // check if items in list are the same
+                // check if items in list are the same -> avoid UI flashing when searching if results are the same
                 if (pokémons.Count == pk.Count())
                 {
                     bool same = true;
@@ -294,11 +292,12 @@
                     }
 
 					if (same) return;
-				}
+                }
+                Console.WriteLine("Clear");
+                pokémons.Clear();
             }
 
-
-            pokémons.Clear();
+            Console.WriteLine("Add");
             pokémons.AddRange(pk);
         }
     }

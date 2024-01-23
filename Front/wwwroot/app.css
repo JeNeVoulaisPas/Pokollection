@@ -50,6 +50,10 @@ h1:focus {
     border-color: #929292;
 }
 
+.card-ratio {
+    padding-top:137.5%;
+}
+
 .error {
     color: #e50000;
 }
