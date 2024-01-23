@@ -57,10 +57,12 @@ namespace PokéService.Entities
         [NotMapped]
         public string[]? TypesArray { get => Types?.Split('\n'); }
 
+		[NotMapped]
+		public bool Possessed { get; set; } = false; // true if the card is in the user's collection
 
-        // Pokémon Category Optional
+		// Pokémon Category Optional
 
-        public string? Description { get; set; }
+		public string? Description { get; set; }
 
         public string? Suffix { get; set; } // e.g.: "Mega", "Primo"
 
@@ -164,7 +166,7 @@ namespace PokéService.Entities
         public Int64 Id { get; set; }
 
         public string? Name { get; set; }
-        public string? Text { get; set; }
+        public string? Effect { get; set; }
         public required string Type { get; set; }  // e.g.: "Talent"
     }
 }

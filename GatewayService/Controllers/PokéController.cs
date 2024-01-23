@@ -183,10 +183,11 @@ namespace GatewayService.Controllers
             }
         }
 
-        // GET: api/Poké/search?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
+        // GET: api/Poké/search?id=&name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<Pokémon>>> SearchCard(
-            string? name = null,
+			int? id = null, // user id to attach the "possessed" property, ignored if invalid
+			string? name = null,
             string? set = null,
             Categories? category = null,
             string? lid = null,

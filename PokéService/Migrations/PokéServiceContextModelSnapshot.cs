@@ -116,14 +116,14 @@ namespace PokéService.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("INTEGER");
 
+                            b1.Property<string>("Effect")
+                                .HasColumnType("TEXT");
+
                             b1.Property<string>("Name")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("PokémonId")
                                 .IsRequired()
-                                .HasColumnType("TEXT");
-
-                            b1.Property<string>("Text")
                                 .HasColumnType("TEXT");
 
                             b1.Property<string>("Type")

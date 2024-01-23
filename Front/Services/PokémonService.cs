@@ -15,6 +15,11 @@ namespace Front.Services
 
         public PokémonService(HttpClient httpClient) : base(httpClient) { }
 
+        public async Task<int?> GetUserIdAsync()
+        {
+			return (_auth == null)? null: await _auth.GetAuthenticationIdAsync();
+		}
+
         public async Task<Pokémon?> GetPokémon(string id)
         {
             var res = await _httpClient.GetAsync($"api/Poké/card/{id}");
@@ -24,8 +29,15 @@ namespace Front.Services
         }
 
         public async Task<IEnumerable<Pokémon>?> Search(string query = "")
-        {
-            var res = await _httpClient.GetAsync($"api/Poké/search{query}");
+		{
+			var id = await GetUserIdAsync();
+            if (id is not null)
+            {
+                if (query.Length > 0) query += "&";
+                else query = "?";
+                query += $"id={id}";
+            }
+			var res = await _httpClient.GetAsync($"api/Poké/search{query}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
             return null;
@@ -33,12 +45,8 @@ namespace Front.Services
 
         public async Task<IEnumerable<Pokémon>?> GetCollection(string query = "", int? id = null)
         {
-            if (id == null)
-            {
-                if (_auth == null) return null;
-                id = await _auth.GetAuthenticationIdAsync();
-            }
-            if (id == -1) return null;
+            if (id is null) id = await GetUserIdAsync();
+            if (id is null) return null;
 
             var res = await _httpClient.GetAsync($"api/Poké/collection/{id}/card{query}");
 
@@ -46,14 +54,14 @@ namespace Front.Services
             return null;
         }
 
-        public async Task<bool> AddCard(int cid)
+        public async Task<bool> AddCard(string cid)
         {
             var res = await _httpClient.PostAsync($"api/Poké/collection/card/{cid}", null);
 
             return res.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteCard(int cid)
+        public async Task<bool> DeleteCard(string cid)
         {
             var res = await _httpClient.DeleteAsync($"api/Poké/collection/card/{cid}");
 

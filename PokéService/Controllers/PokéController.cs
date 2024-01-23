@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PokéService.Data;
 using PokéService.Entities;
+using System.Security.Cryptography;
 
 namespace PokéService.Controllers
 {
@@ -36,21 +37,39 @@ namespace PokéService.Controllers
             foreach (var c in _context.CardsCollection) _context.CardsCollection.Remove(c);
             await _context.SaveChangesAsync();
             return Ok();
-        }
+		}
 
-        // GET: api/Poké/collection/5
-        [HttpGet("collection/{id}")]
-        public async Task<ActionResult<string[]?>> GetCollection(int id) // get all cards ids
-        {
-            var c = await _context.CardsCollection.FindAsync(id);
+		// GET: api/Poké/collection/5
+		[HttpGet("collection/{id}")]
+		public async Task<ActionResult<string[]?>> GetCollection(int id) // get all cards ids
+		{
+			var c = await _context.CardsCollection.FindAsync(id);
 
-            if (c is null) return NotFound("collection not found");
+			if (c is null) return NotFound("collection not found");
 
-            return Ok(c.CardsArray);
-        }
+			return Ok(c.CardsArray);
+		}
 
-        // GET: api/Poké/collection/5/card?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
-        [HttpGet("collection/{id}/card")]
+		// GET: api/Poké/collection/5/contains/base1-1+base1-2
+		[HttpGet("collection/{id}/contains/{cid}")]
+		public async Task<ActionResult<IEnumerable<bool>>> CheckCollection(int id, string cid) 
+		{
+			var c = await _context.CardsCollection.FindAsync(id);
+
+			if (c is null) return NotFound("collection not found");
+
+            var b = new List<bool>();
+            var s = cid.Split('+');
+
+            var ca = c.CardsArray;
+
+            foreach (var i in s) b.Add(ca != null && ca.Contains(i));
+            
+			return Ok(b);
+		}
+
+		// GET: api/Poké/collection/5/card?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
+		[HttpGet("collection/{id}/card")]
         public async Task<ActionResult<IEnumerable<Pokémon>>> GetPokémonCollection(int id, // get all cards data
             string? name = null,
             string? set = null,
@@ -74,7 +93,11 @@ namespace PokéService.Controllers
             if (cd is not null) foreach (var cid in cd)
             {
                 var pk = await _context.Pokémon.FindAsync(cid);
-                if (pk is not null) p.Add(pk);
+                if (pk is not null)
+                {
+                    pk.Possessed = true;
+                    p.Add(pk);
+                }
             }
 
             var pkmns = Search(p.AsQueryable(), name, set, category, lid, type1, type2, illustrator, hp, limit, offset);
@@ -165,10 +188,11 @@ namespace PokéService.Controllers
             return Ok(p);
         }
 
-        // GET: api/Poké/search?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
+        // GET: api/Poké/search?id=&name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
         [HttpGet("search")]
-        public ActionResult<IEnumerable<Pokémon>> SearchCard(
-            string? name = null,
+        public async Task<ActionResult<IEnumerable<Pokémon>>> SearchCard(
+            int? id = null, // user id to attach the "possessed" property, ignored if invalid
+			string? name = null,
             string? set = null,
             Categories? category = null,
             string? lid = null,
@@ -184,7 +208,22 @@ namespace PokéService.Controllers
 
             if (pkmns is null) return NotFound();
 
-            return Ok(pkmns);
+            if (id is not null)
+            {
+			    var c = await _context.CardsCollection.FindAsync(id);
+
+                if (c is not null)
+				{
+					var ca = c.CardsArray;
+
+					if (ca is not null) foreach (var p in pkmns)
+                    {
+                        p.Possessed = ca.Contains(p.Id);
+                    }
+                }
+            }
+
+			return Ok(pkmns);
         }
 
 

@@ -93,6 +93,9 @@ namespace PokéService.Entities
         [NotMapped]
         public string[]? TypesArray { get => Types?.Split('\n'); }
 
+        [NotMapped]
+        public bool Possessed { get; set; } = false; // true if the card is in the user's collection (attr attached through API)
+
 
         // Pokémon Category Optional
 
@@ -331,7 +334,7 @@ namespace PokéService.Entities
         public Int64 Id { get; set; }
 
         public string? Name { get; set; }
-        public string? Text { get; set; }
+        public string? Effect { get; set; }
         public required string Type { get; set; }  // e.g.: "Talent"
     }
 }

@@ -1,4 +1,4 @@
-﻿@page "/pokémon"
+﻿@page "/pokémon/{id}"
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authStateProvider
 @inject PokémonService pokémonService
@@ -13,7 +13,7 @@
 <h1>@(pokémon?.Name ?? "Inconnue")</h1>
 
 <div class="card mb-4">
-	<div class="card-ratio">
+	<div>
 		<img src="@(pokémon?.Image)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon?.Name ?? "Inconnue")" @onload="Loaded"/>
 		@if (loading)
 		{
@@ -67,7 +67,7 @@
 					<span class="badge bg-primary">@res.Value</span>
 				}
 			</p>
-		})
+		}
 
 		@if (pokémon?.Weaknesses != null)
 		{
@@ -79,7 +79,7 @@
 					<span class="badge bg-primary">@weak.Value</span>
 				}
 			</p>
-		})
+		}
 
 		@if (pokémon?.Abilities != null)
 		{
@@ -89,10 +89,10 @@
 				{
 					<span class="badge bg-primary">@abi.Name</span>
 					<span class="energy @pokémonService.GetTypeClass(abi.Type)"></span>
-					<span class="badge bg-primary">@abi.Text</span>
+					<span class="badge bg-primary">@abi.Effect</span>
 				}
 			</p>
-		})
+		}
 
 		@if (pokémon?.Attacks != null)
 		{
@@ -121,7 +121,7 @@
 					}
 				}
 			</p>
-		})
+		}
 
 		<p class="card-text">Numéro @pokémon?.LocalId / @pokémon?.Total</p>
 		<p class="card-text">Rareté: @pokémon?.Rarity</p>
@@ -165,7 +165,13 @@
 		loading = false;
 	}
 
-	protected override async Task OnInitializedAsync() {
+	public void OnGet(string? id = null)
+	{
+		this.id = id;
+	}
+
+	protected override async Task OnInitializedAsync()
+	{
 		pokémonService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider); // ensure manual injection of authStateProvider
 
 		if (id != null) {
