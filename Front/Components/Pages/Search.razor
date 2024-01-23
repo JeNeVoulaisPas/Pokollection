@@ -7,7 +7,12 @@
 @using Front.Components.Widget
 @using PokéService.Entities;
 
+<div id="main">
+<link rel="stylesheet" href="style.css" />
+
 <PageTitle>Recherche</PageTitle>
+
+<h1>Recherche</h1>
 <InputText @bind-Value="searchModel.Name" @onchange="SearchPkmn"/>
 
 <label for="cat">Type de carte:</label>
@@ -172,7 +177,6 @@
     <option value="Poing de Fusion">Poing de Fusion</option>
 </InputSelect>
 
-<h1>Recherche</h1>
 <button @onclick="SearchPkmn">
     Search
 </button>
@@ -184,6 +188,7 @@
 			<CardItem pokémon="@pokémon" />
 		</div>
 	}
+</div>
 </div>
 
 @code {

@@ -1,0 +1,330 @@
+﻿
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+.pokemon-ball {
+    border: 3px solid white;
+    border-radius: 50%;
+}
+
+.navi {
+    background: #029A81;
+    padding: 20px 40px;
+    font-size: 28px;
+    text-align: right;
+}
+
+    .navi span {
+        margin: 5px 10px 5px 10px;
+    }
+
+        .navi span a {
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+        }
+
+#main {
+    background: #32AC97;
+    width: 100%;
+    padding: 40px 0;
+text-align: center;
+}
+
+    #main h1 {
+        font-family: 'Oswald', sans-serif;
+        font-size: 48px;
+        text-transform: uppercase;
+        color: red ;
+    }
+
+    #main p {
+        font-size: 18px;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #main a {
+        background: #013763;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+        #main a:hover {
+            background: #9E1908;
+        }
+}
+
+
+    #home div {
+        display: inline-block;
+        vertical-align: top;
+        width: 48%;
+    }
+
+.aboutImg {
+    text-align: center;
+}
+
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    color: #9E1908;
+}
+
+.headerP {
+    color: white;
+    font-size: 12px;
+    width: 80%;
+}
+
+    .headerP a {
+        color: #013763;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+.row {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#contact {
+    text-align: center;
+}
+
+.header2 {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    font-size: 36px;
+    color: #013763;
+    margin: 0 0 5px 0;
+}
+
+#contact select {
+    width: 200px;
+    height: 40px;
+    border-radius: 0px;
+}
+
+.goButton {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background: #013763;
+    text-transform: uppercase;
+}
+
+.contactNavi {
+    margin: 80px 0 0 0;
+}
+
+    .contactNavi a {
+        margin: 0 10px;
+    }
+
+
+
+
+/*
+body, h1, h2, h3, p, ul, li, button {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    color: #e50000;
+    font-family: 'Arial', sans-serif;
+    font-size: 2em;
+    color: #e50000;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+
+input, select, button {
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #e50000;
+    color: #fff;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: #b20000;
+    }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.col-3 {
+    width: calc(25% - 30px);
+    margin: 15px;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+    .card img {
+        max-width: 100%;
+        height: auto;
+    }
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.col-3 {
+    width: calc(25% - 30px);
+    margin: 15px;
+    box-sizing: border-box; 
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    height: 100%; 
+    box-sizing: border-box; 
+}
+
+.card img {
+    max-width: 100%;
+    height: auto;
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+
+.card .price {
+    color: #e50000;
+    font-weight: bold;
+}
+
+.card .description {
+    margin: 10px 0;
+}
+
+.card .add-to-cart {
+    background-color: #e50000;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .card .add-to-cart:hover {
+        background-color: #b20000;
+    }
+
+.card .out-of-stock {
+    color: #e50000;
+    font-weight: bold;
+}
+
+.card .out-of-stock:before {
+    content: "Out of stock";
+}
+
+.card .out-of-stock:after {
+    content: "Sorry, this product is out of stock.";
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.card .add-to-cart[disabled] {
+    background-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.card .add-to-cart[disabled]:hover {
+    background-color: #ccc;
+}
+
+.card .add-to-cart[disabled]:after {
+    content: "Sorry, this product is out of stock.";
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.card .add-to-cart[disabled]:before {
+    content: "Out of stock";
+}
+
+.card .add-to-cart[disabled] {
+    background-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+
+.card .add-to-cart[disabled]:hover {
+    background-color: #ccc;
+
+.card .add-to-cart[disabled]:after {
+    content: "Sorry, this product is out of stock.";
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.card .add-to-cart[disabled]:before {
+    content: "Out of stock";
+}
+*/
+
+
+
+
+
+
+
