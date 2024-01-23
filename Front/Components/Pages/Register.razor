@@ -4,15 +4,27 @@
 @inject RegisterService registerService
 @inject AuthenticationStateProvider authStateProvider
 
+<link rel="stylesheet" href="style.css" />
+
+<PageTitle>Register</PageTitle>
+<div class="titleBanner">
+    <img src="images/Inscription.png" alt="Inscription Image">
+</div>
 <EditForm Model="@userCreateModel" OnValidSubmit="HandleRegister">
     <InputText @bind-Value="userCreateModel.Email" typeof="email"/>
     <InputText @bind-Value="userCreateModel.Name" />
     <InputText @bind-Value="userCreateModel.Password" type="password" />
     <button type="submit">Register</button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <p class="error">@errorMessage</p>
+    }
 </EditForm>
 
 @code {
     private UserCreateModel userCreateModel = new UserCreateModel();
+    private string errorMessage = "";
 
 
     private async void HandleRegister()
@@ -26,7 +38,7 @@
         }
         else
         {
-            // Handle failed authentication
+            errorMessage = user.ErrorMessage;
         }
     }
 

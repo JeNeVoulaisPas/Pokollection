@@ -6,11 +6,15 @@
 @using Front.Components.Widget
 @using PokéService.Entities
 
+<link rel="stylesheet" href="style.css" />
+
 <AuthorizeView Roles="User">
     <Authorized>
         <PageTitle>Collection</PageTitle>
 
-        <h1>Collection de @context.User.Identity?.Name</h1>
+        <div class="titleBanner">
+            <img src="images/Collection.png" alt="Collection Image">
+        </div>
 
         <SearchGrid Searcher="Searcher" Addable="false"/>
 

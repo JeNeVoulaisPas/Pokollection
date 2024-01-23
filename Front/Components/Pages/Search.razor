@@ -7,8 +7,22 @@
 @using Front.Components.Widget
 @using PokéService.Entities;
 
+
+<link rel="stylesheet" href="style.css" />
+
 <PageTitle>Recherche</PageTitle>
-<SearchGrid Searcher="Searcher"/>
+
+	<div class="titleBanner">
+		<img src="images/Recherche.png" alt="Recherche Image">
+	</div>
+
+	<div class="Pokedex">
+		<img id="Pokedex" src="images/Pokedex.png" alt="Pokedex">
+		<div class="Formedex">
+			<SearchGrid Searcher="Searcher" />
+        </div>		
+    </div>
+
 
 @code {
 	public async Task<IEnumerable<Pokémon>?> Searcher(string query) {

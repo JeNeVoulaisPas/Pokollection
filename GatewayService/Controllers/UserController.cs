@@ -119,6 +119,7 @@ namespace GatewayService.Controllers
             }
         }
 
+
         private string GenerateJwtToken(int userId)
         {
             var claims = new List<Claim>

@@ -1,0 +1,231 @@
+﻿
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+}
+
+.pokemon-ball {
+    border: 3px solid white;
+    border-radius: 50%;
+}
+
+.navi {
+    background: #029A81;
+    padding: 20px 40px;
+    font-size: 28px;
+    text-align: right;
+}
+
+    .navi span {
+        margin: 5px 10px 5px 10px;
+    }
+
+        .navi span a {
+            color: white;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: 'Oswald', sans-serif;
+        }
+
+#main {
+    background: #32AC97;
+    width: 100%;
+    padding: 40px 0;
+text-align: center;
+}
+
+    #main h1 {
+        font-family: 'Oswald', sans-serif;
+        font-size: 48px;
+        text-transform: uppercase;
+        color: red ;
+    }
+
+    #main p {
+        font-size: 18px;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #main a {
+        background: #013763;
+        padding: 10px 20px;
+        text-decoration: none;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+        #main a:hover {
+            background: #9E1908;
+        }
+}
+
+
+    #home div {
+        display: inline-block;
+        vertical-align: top;
+        width: 48%;
+    }
+
+.aboutImg {
+    text-align: center;
+}
+
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    color: #9E1908;
+}
+
+.headerP {
+    color: white;
+    font-size: 12px;
+    width: 80%;
+}
+
+    .headerP a {
+        color: #013763;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+.row {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+#contact {
+    text-align: center;
+}
+
+.header2 {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    font-size: 36px;
+    color: #013763;
+    margin: 0 0 5px 0;
+}
+
+#contact select {
+    width: 200px;
+    height: 40px;
+    border-radius: 0px;
+}
+
+.goButton {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background: #013763;
+    text-transform: uppercase;
+}
+
+.contactNavi {
+    margin: 80px 0 0 0;
+}
+
+    .contactNavi a {
+        margin: 0 10px;
+    }
+
+.titleBanner {
+    background-color: red;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    border-color:darkblue;
+    border-style: solid;
+}
+
+
+    .titleBanner img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+
+.form-horizontal {
+    color: black;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 50px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-color: darkblue;
+    border-style: solid;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+
+.col-md-3, .col-sm-6 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.Pokedex {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+#Pokedex {
+    display: block;
+    margin: 0 auto;
+    z-index: 1; 
+    width: 100%;    
+}
+
+.Formedex {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width:50%;
+    height:80%;
+}

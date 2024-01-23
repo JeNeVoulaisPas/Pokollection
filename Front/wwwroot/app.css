@@ -115,3 +115,8 @@ h1:focus {
 .energy-fighting {
     background-position: -50px -25px;
 }
+}
+
+.error {
+    color: #e50000;
+}
