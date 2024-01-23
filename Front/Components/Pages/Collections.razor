@@ -3,7 +3,14 @@
 @inject AuthenticationStateProvider authStateProvider
 @using System.Security.Claims
 
-<h1> Collection de tes Amis !</h1>
+
+<link rel="stylesheet" href="style.css" />
+
+<div class="titleBanner">
+    <img src="images/Collections.png" alt="Collections Image">
+</div>
+
+<h1> Découvre les collections de tes amis !!!</h1>
 <InputText @bind-Value="code" @bind-Value:event="oninput" placeholder="Entre un code Amis" />
 
 @code {

@@ -4,11 +4,15 @@
 @inject AuthenticationStateProvider authStateProvider
 @using System.Security.Claims
 
+<link rel="stylesheet" href="style.css"/>
+
 <AuthorizeView Roles="User">
     <Authorized>
         <PageTitle>Mon compte</PageTitle>
 
-        <h1>Mon compte</h1>
+        <div class="titleBanner">
+            <img src="images/Mon-compte.png" alt="Account Image">
+        </div>
 
         <button class="btn btn-primary" @onclick="HandleSuppression">Supprimer le compte</button>
     </Authorized>

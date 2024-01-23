@@ -135,196 +135,97 @@ h1 {
         margin: 0 10px;
     }
 
-
-
-
-/*
-body, h1, h2, h3, p, ul, li, button {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
-}
-
-h1 {
-    color: #e50000;
-    font-family: 'Arial', sans-serif;
-    font-size: 2em;
-    color: #e50000;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
+.titleBanner {
+    background-color: red;
+    color: white;
     text-align: center;
-    letter-spacing: 2px;
-    text-transform: uppercase;
+    padding: 20px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    border-color:darkblue;
+    border-style: solid;
 }
 
-.container {
-    max-width: 1200px;
+
+    .titleBanner img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+
+.form-horizontal {
+    color: black;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 50px;
+    max-width: 600px;
     margin: 0 auto;
+    border-color: darkblue;
+    border-style: solid;
 }
 
 label {
-    font-weight: bold;
-    margin-top: 10px;
     display: block;
-}
-
-input, select, button {
     margin-bottom: 10px;
+}
+
+.form-control {
+    width: 100%;
     padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
 }
 
-button {
-    background-color: #e50000;
-    color: #fff;
-    cursor: pointer;
-}
-
-    button:hover {
-        background-color: #b20000;
-    }
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -15px;
-}
-
-.col-3 {
-    width: calc(25% - 30px);
-    margin: 15px;
-}
-
-.card {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-}
-
-    .card img {
-        max-width: 100%;
-        height: auto;
-    }
-
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 -15px;
-}
-
-.col-3 {
-    width: calc(25% - 30px);
-    margin: 15px;
-    box-sizing: border-box; 
-}
-
-.card {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    height: 100%; 
-    box-sizing: border-box; 
-}
-
-.card img {
-    max-width: 100%;
-    height: auto;
-}
-
-.card h2 {
-    font-size: 1.1rem;
-    margin: 10px 0;
-}
-
-.card .price {
-    color: #e50000;
-    font-weight: bold;
-}
-
-.card .description {
-    margin: 10px 0;
-}
-
-.card .add-to-cart {
-    background-color: #e50000;
-    color: #fff;
+.button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
     border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-    .card .add-to-cart:hover {
-        background-color: #b20000;
-    }
-
-.card .out-of-stock {
-    color: #e50000;
-    font-weight: bold;
+.container {
+    margin-top: 20px;
 }
 
-.card .out-of-stock:before {
-    content: "Out of stock";
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
 }
 
-.card .out-of-stock:after {
-    content: "Sorry, this product is out of stock.";
+.col-md-3, .col-sm-6 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+
+.Pokedex {
+    position: relative;
+    text-align: center;
+    width: 100%;
+}
+
+#Pokedex {
     display: block;
-    font-size: 0.8rem;
-    margin-top: 5px;
+    margin: 0 auto;
+    z-index: 1; 
+    width: 100%;    
 }
 
-.card .add-to-cart[disabled] {
-    background-color: #ccc;
-    color: #fff;
-    cursor: not-allowed;
+.Formedex {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width:50%;
+    height:80%;
 }
-
-.card .add-to-cart[disabled]:hover {
-    background-color: #ccc;
-}
-
-.card .add-to-cart[disabled]:after {
-    content: "Sorry, this product is out of stock.";
-    display: block;
-    font-size: 0.8rem;
-    margin-top: 5px;
-}
-
-.card .add-to-cart[disabled]:before {
-    content: "Out of stock";
-}
-
-.card .add-to-cart[disabled] {
-    background-color: #ccc;
-    color: #fff;
-    cursor: not-allowed;
-
-.card .add-to-cart[disabled]:hover {
-    background-color: #ccc;
-
-.card .add-to-cart[disabled]:after {
-    content: "Sorry, this product is out of stock.";
-    display: block;
-    font-size: 0.8rem;
-    margin-top: 5px;
-}
-
-.card .add-to-cart[disabled]:before {
-    content: "Out of stock";
-}
-*/
-
-
-
-
-
-
-

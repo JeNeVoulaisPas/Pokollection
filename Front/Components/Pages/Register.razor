@@ -4,6 +4,12 @@
 @inject RegisterService registerService
 @inject AuthenticationStateProvider authStateProvider
 
+<link rel="stylesheet" href="style.css" />
+
+<PageTitle>Register</PageTitle>
+<div class="titleBanner">
+    <img src="images/Inscription.png" alt="Inscription Image">
+</div>
 <EditForm Model="@userCreateModel" OnValidSubmit="HandleRegister">
     <InputText @bind-Value="userCreateModel.Email" typeof="email"/>
     <InputText @bind-Value="userCreateModel.Name" />
