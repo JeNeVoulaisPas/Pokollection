@@ -3,7 +3,10 @@
 @inject AuthenticationStateProvider authStateProvider
 @using System.Security.Claims
 
-<h1> Collection des autres</h1>
+<h1> Collection de tes Amis !</h1>
+<InputText @bind-Value="code" @bind-Value:event="oninput" placeholder="Entre un code Amis" />
 
 @code {
+	private string? code { get; set; }
+
 }

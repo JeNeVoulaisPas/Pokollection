@@ -39,20 +39,33 @@ namespace GatewayService.Controllers
         }
 
 
-        // GET: api/Poké/collection/5/card
+        // GET: api/Poké/collection/5/card?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
         [HttpGet("collection/{id}/card")]
-        public async Task<ActionResult<Pokémon>> GetPokémonCollection(int id) // get all cards data
+        public async Task<ActionResult<IEnumerable<Pokémon>>> GetPokémonCollection(int id, // get all cards data
+            string? name = null,
+            string? set = null,
+            Categories? category = null,
+            string? lid = null,
+            string? type1 = null,
+            string? type2 = null,
+            string? illustrator = null,
+            int? hp = null,
+            int limit = 50,
+            int offset = 0)
         {
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
             {
+                var arg = this.HttpContext.Request.QueryString;
+
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-                HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/{id}/card");
+                HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/{id}/card{arg}"); // fast forward query arguments
 
                 // Check if the response status code is 200 (OK)
                 if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
                 else return NotFound(await response.Content.ReadAsStringAsync());
+                // avoid deserialize+reserialize ?? -> return Content(await apiResponse.Content.ReadAsStringAsync(), apiResponse.Content.Headers.ContentType.MediaType);
             }
         }
 
@@ -170,9 +183,9 @@ namespace GatewayService.Controllers
             }
         }
 
-        // GET: api/Poké/card/5
+        // GET: api/Poké/search?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
         [HttpGet("search")]
-        public async Task<ActionResult<Pokémon[]>> SearchCard(
+        public async Task<ActionResult<IEnumerable<Pokémon>>> SearchCard(
             string? name = null,
             string? set = null,
             Categories? category = null,
@@ -192,7 +205,7 @@ namespace GatewayService.Controllers
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
                 HttpResponseMessage response = await client.GetAsync(
-                    $"api/Poké/search{arg}"); // fast forward query argument
+                    $"api/Poké/search{arg}"); // fast forward query arguments
 
                 // Check if the response status code is 200 (OK)
                 if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
