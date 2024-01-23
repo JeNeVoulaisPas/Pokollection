@@ -1,9 +1,9 @@
 ﻿@inject NavigationManager NavigationManager
 @using PokéService.Entities;
 
-<div class="card mb-4">
+<div class="card mb-4" @onclick="OnClick">
 	<div class="card-ratio">
-		<img id="card-@(id)" src="@(url)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon.Name)" @onload="Loaded">
+		<img id="card-@(id)" src="@(url)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon.Name)" @onload="Loaded"/>
 		@if (loading)
 		{
 			<div id="spinner-@(id)" class="spinner-border text-primary" role="status">

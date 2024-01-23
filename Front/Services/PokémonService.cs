@@ -59,6 +59,25 @@ namespace Front.Services
 
             return res.IsSuccessStatusCode;
         }
+
+        public string GetTypeClass(string type)
+        {
+            return type switch
+            {
+				"Plante" => "energy-grass",
+				"Feu" => "energy-fire",
+				"Eau" => "energy-water",
+				"Psy" => "energy-psychic",
+				"Combat" => "energy-fighting",
+				"Obscurité" => "energy-darkness",
+				"Métal" => "energy-metal",
+				"Fée" => "energy-fairy",
+				"Dragon" => "energy-dragon",
+				"Électrique" => "energy-lightning",
+				"Incolore" => "energy-colorless",
+				_ => "energy-colorless",
+			};
+		}
     }
 }
 
