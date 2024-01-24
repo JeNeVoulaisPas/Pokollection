@@ -39,6 +39,7 @@ namespace UserService.Entities
         public string? Name { get; set; }
         public string? Email { get; set; }
     }
+
     public class UserLogin
     {
         public required string Name { get; set; }

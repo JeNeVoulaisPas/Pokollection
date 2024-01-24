@@ -1,0 +1,33 @@
+﻿@page "/friend/{code:int}"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@inject PokémonService pokémonService
+@using System.Security.Claims;
+@using PokéService.Entities;
+@using Front.Components.Widget;
+
+
+<PageTitle>Collection d'Amis</PageTitle>
+
+<div class="titleBanner">
+    <img src="images/Collection.png" alt="Collection Image">
+</div>
+
+<SearchGrid Searcher="Searcher"/>
+
+@code {
+    [Parameter] public int? code { get; set; }
+
+    public void OnGet(int code)
+    {
+        this.code = code;
+    }
+
+    public async Task<IEnumerable<Pokémon>?> Searcher(string query)
+    {
+        pokémonService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider); // ensure manual injection of authStateProvider
+        var p = await pokémonService.GetCollection(query, code);
+        if (p is null) NavigationManager.NavigateTo($"/friend?code={code}&type=error");
+        return p;
+    }
+}
