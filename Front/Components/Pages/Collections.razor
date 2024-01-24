@@ -1,0 +1,21 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider authStateProvider
+@using System.Security.Claims
+
+
+<link rel="stylesheet" href="style.css" />
+
+<div class="titleBanner">
+    <img src="images/Collections.png" alt="Collections Image">
+</div>
+
+<div class="horizontal-display">
+    <h1> Découvre les collections de tes amis !!!</h1>
+    <InputText @bind-Value="code" @bind-Value:event="oninput" placeholder="Entre un code Amis" />
+</div>
+
+@code {
+	private string? code { get; set; }
+
+}
