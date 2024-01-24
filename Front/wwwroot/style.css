@@ -229,3 +229,34 @@ label {
     width:50%;
     height:80%;
 }
+
+
+.card-container {
+    position: relative;
+    padding-bottom: 137.5%;
+}
+
+.card-image, .card-spinner {
+    position: absolute;
+}
+
+.card-image {
+}
+
+.card-image-blur {
+    filter: blur(5px); /* Adjust the pixel value to control the blur intensity */
+}
+
+.card-button {
+    position: absolute;
+    right: 0%;
+    bottom: 0%;
+    z-index: 1;
+}
+
+.card-spinner {
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

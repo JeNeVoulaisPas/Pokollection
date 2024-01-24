@@ -2,25 +2,40 @@
 @inject PokémonService pokémonService
 @using PokéService.Entities;
 
-<div class="card mb-4">
-	<h3>@(pokémon.Name) @pokémon.LocalId / @pokémon.Total</h3>
-	<div class="card-ratio">
-		<img id="card-@(id)" src="@(url)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon.Name)" @onload="Loaded" @onclick="OnClick"/>
-		@if (loading)
-		{
-			<div id="spinner-@(id)" class="spinner-border text-primary" role="status">
-				<span class="visually-hidden">Loading...</span>
-			</div>
-		}
-		@if (pokémon.Possessed)
-		{
-			// button to delete the card
-			<button class="btn btn-primary" @onclick="OnDelete">Supprimer</button>
-			
-		} else {
-			// button to add the card
-			<button class="btn btn-primary" @onclick="OnAdd">Ajouter</button>
-		}
+<div class="card mb-4 rounded">
+	<div class="card-container rounded">
+		<div class="card-image rounded bg-dark">
+			<img id="card-@(id)" src="@(url)" class="bg-dark img-fluid rounded-2 mx-auto d-block @(loading ? "card-image-blur": "")" alt="@(pokémon.Name)" @onload="Loaded" @onclick="OnClick" />
+		</div>
+		<div class="card-spinner">
+			@if (loading)
+			{
+				<div id="spinner-@(id)" class="spinner-border text-primary" role="status">
+					<span class="visually-hidden">Loading...</span>
+				</div>
+			}
+		</div>
+
+
+		<AuthorizeView Roles="User">
+			<Authorized>
+				<div class="card-button">
+					@if (pokémon.Possessed)
+					{
+						<button class="btn btn-outline-danger" @onclick="OnDelete">
+							<span class="bi bi-trash" aria-hidden="true"></span>
+						</button>
+					}
+					else
+					{
+						<button class="btn btn-outline-success card-image-blur" @onclick="OnAdd">
+							<span class="bi bi-plus" aria-hidden="true"></span>
+						</button>
+					}
+				</div>
+			</Authorized>
+		</AuthorizeView>
+
 	</div>
 </div>
 
