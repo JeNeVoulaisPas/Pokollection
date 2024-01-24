@@ -4,185 +4,191 @@
 @using PokéService.Entities;
 @using System.Text;
 
-<div class="form-horizontal">
-    <label>
-	    Nom de la carte:
-        <InputText class="form-control" @bind-Value="Name" @oninput="SetName" placeholder="Pikachu" />
-    </label>
 
-    <label>
-        Type de carte:
-        <InputSelect class="form-control" @bind-Value="Category" @oninput="SetCategory">
-		    <option value="">Tous</option>
-		    <option value="0">Pokémon</option>
-		    <option value="1">Energie</option>
-		    <option value="2">Dresseur</option>
-	    </InputSelect>
-    </label>
+<div class="Pokedex">
+	<img id="Pokedex" src="images/Pokedex.png" alt="Pokedex">
+	<div class="Formedex">
+
+        <div class="form-horizontal">
+            <label>
+                Nom de la carte:
+                <InputText class="form-control" @bind-Value="Name" @oninput="SetName" placeholder="Pikachu" />
+            </label>
+
+            <label>
+                Type de carte:
+                <InputSelect class="form-control" @bind-Value="Category" @oninput="SetCategory">
+                    <option value="">Tous</option>
+                    <option value="0">Pokémon</option>
+                    <option value="1">Energie</option>
+                    <option value="2">Dresseur</option>
+                </InputSelect>
+            </label>
 
 
-    <label>
-        Type du pokémon:
-        <InputSelect class="form-control" @bind-Value="Type1" @oninput="SetType1">
-		    <option value="">Tous</option>
-		    <option value="Incolore">Incolore</option>
-		    <option value="Plante">Plante</option>
-		    <option value="Eau">Eau</option>
-		    <option value="Feu">Feu</option>
-		    <option value="Électrique">Électrique</option>
-		    <option value="Métal">Métal</option>
-		    <option value="Psy">Psy</option>
-		    <option value="Combat">Combat</option>
-		    <option value="Obscurité">Obscurité</option>
-		    <option value="Dragon">Dragon</option>
-		    <option value="Fée">Fée</option>
-	    </InputSelect>
-    </label>
+            <label>
+                Type du pokémon:
+                <InputSelect class="form-control" @bind-Value="Type1" @oninput="SetType1">
+                    <option value="">Tous</option>
+                    <option value="Incolore">Incolore</option>
+                    <option value="Plante">Plante</option>
+                    <option value="Eau">Eau</option>
+                    <option value="Feu">Feu</option>
+                    <option value="Électrique">Électrique</option>
+                    <option value="Métal">Métal</option>
+                    <option value="Psy">Psy</option>
+                    <option value="Combat">Combat</option>
+                    <option value="Obscurité">Obscurité</option>
+                    <option value="Dragon">Dragon</option>
+                    <option value="Fée">Fée</option>
+                </InputSelect>
+            </label>
 
-    <label>
-        <InputSelect class="form-control" @bind-Value="Type2" @oninput="SetType2">
-            <option value="">Tous</option>
-            <option value="Incolore">Incolore</option>
-            <option value="Plante" class="energy energy-grass">Plante</option>
-            <option value="Eau">Eau</option>
-            <option value="Feu">Feu</option>
-            <option value="Électrique">Électrique</option>
-            <option value="Métal">Métal</option>
-            <option value="Psy">Psy</option>
-            <option value="Combat">Combat</option>
-            <option value="Obscurité">Obscurité</option>
-            <option value="Dragon">Dragon</option>
-            <option value="Fée" class="energy energy-fairy">Fée</option>
-        </InputSelect>
-    </label>
-    <label>
-        Set de carte:
-        <InputSelect class="form-control" @bind-Value="Set" @oninput="SetSet">
-            <option value="">Tous</option>
-            <option value="EX Île des Dragons">EX Île des Dragons</option>
-            <option value="Règne de Glace">Règne de Glace</option>
-            <option value="Éclipse Cosmique">Éclipse Cosmique</option>
-            <option value="Expedition">Expedition</option>
-            <option value="Impulsion Turbo">Impulsion Turbo</option>
-            <option value="Neo Genesis">Neo Genesis</option>
-            <option value="POP Série 4">POP Série 4</option>
-            <option value="Éveil des Légendes">Éveil des Légendes</option>
-            <option value="EX Tempête de sable">EX Tempête de sable</option>
-            <option value="EX Gardiens de Cristal">EX Gardiens de Cristal</option>
-            <option value="Harmonie des Esprits">Harmonie des Esprits</option>
-            <option value="Explosion Plasma">Explosion Plasma</option>
-            <option value="Neo Revelation">Neo Revelation</option>
-            <option value="Tempête Argentée">Tempête Argentée</option>
-            <option value="Set de Base">Set de Base</option>
-            <option value="Tempète Plasma">Tempète Plasma</option>
-            <option value="Promo XY">Promo XY</option>
-            <option value="EX Rouge Feu & Vert Feuille">EX Rouge Feu & Vert Feuille</option>
-            <option value="Ténèbres Embrasées">Ténèbres Embrasées</option>
-            <option value="HeartGold SoulSilver">HeartGold SoulSilver</option>
-            <option value="Dragons Éxaltés">Dragons Éxaltés</option>
-            <option value="Promo DP">Promo DP</option>
-            <option value="Rivaux Émergeants">Rivaux Émergeants</option>
-            <option value="Platine">Platine</option>
-            <option value="Double Danger">Double Danger</option>
-            <option value="Déchaînement">Déchaînement</option>
-            <option value="Ciel Rugissant">Ciel Rugissant</option>
-            <option value="Évolution Céleste">Évolution Céleste</option>
-            <option value="Wizards Black Star Promos">Wizards Black Star Promos</option>
-            <option value="Lumière Interdite">Lumière Interdite</option>
-            <option value="Indomptable">Indomptable</option>
-            <option value="Célébrations">Célébrations</option>
-            <option value="Épée et Bouclier">Épée et Bouclier</option>
-            <option value="Impact des Destins">Impact des Destins</option>
-            <option value="EX Fantômes Holon">EX Fantômes Holon</option>
-            <option value="Rupture Turbo">Rupture Turbo</option>
-            <option value="Aquapolis">Aquapolis</option>
-            <option value="Destinées Futures">Destinées Futures</option>
-            <option value="Flammes Obsidiennes">Flammes Obsidiennes</option>
-            <option value="Promo SWSH">Promo SWSH</option>
-            <option value="Noir & Blanc">Noir & Blanc</option>
-            <option value="POP Série 7">POP Série 7</option>
-            <option value="Aube Majestueuse">Aube Majestueuse</option>
-            <option value="Bienvenue à Kalos">Bienvenue à Kalos</option>
-            <option value="Promo SM">Promo SM</option>
-            <option value="Alliance Infaillible">Alliance Infaillible</option>
-            <option value="Générations">Générations</option>
-            <option value="Tempête">Tempête</option>
-            <option value="Explorateurs Obscurs">Explorateurs Obscurs</option>
-            <option value="POP Série 2">POP Série 2</option>
-            <option value="Soleil et Lune">Soleil et Lune</option>
-            <option value="Tempête Céleste">Tempête Céleste</option>
-            <option value="Merveilles Secrètes">Merveilles Secrètes</option>
-            <option value="Duels au Sommets">Duels au Sommets</option>
-            <option value="Trésors Mystérieux">Trésors Mystérieux</option>
-            <option value="Invasion Carmin">Invasion Carmin</option>
-            <option value="Styles de combat">Styles de combat</option>
-            <option value="Détective Pikachu">Détective Pikachu</option>
-            <option value="Promo BW">Promo BW</option>
-            <option value="Offensive Vapeur">Offensive Vapeur</option>
-            <option value="EX Dragon">EX Dragon</option>
-            <option value="Carte Alternative A Jaune">Carte Alternative A Jaune</option>
-            <option value="POP Série 3">POP Série 3</option>
-            <option value="Gardiens Ascendants">Gardiens Ascendants</option>
-            <option value="Jungle">Jungle</option>
-            <option value="Triomphant">Triomphant</option>
-            <option value="Étincelles">Étincelles</option>
-            <option value="Duo de Choc">Duo de Choc</option>
-            <option value="Stars Étincelantes">Stars Étincelantes</option>
-            <option value="XY">XY</option>
-            <option value="Voltage Éclatant">Voltage Éclatant</option>
-            <option value="EX Deoxys">EX Deoxys</option>
-            <option value="Évolutions à Paldea">Évolutions à Paldea</option>
-            <option value="Coffre des Dragons">Coffre des Dragons</option>
-            <option value="EX Team Magma vs Team Aqua">EX Team Magma vs Team Aqua</option>
-            <option value="Diamant & Perle">Diamant & Perle</option>
-            <option value="Frontières Franchies">Frontières Franchies</option>
-            <option value="POP Série 1">POP Série 1</option>
-            <option value="Fossile">Fossile</option>
-            <option value="L'appel des Légendes">L'appel des Légendes</option>
-            <option value="Pokémon GO">Pokémon GO</option>
-            <option value="EX Gardiens du Pouvoir">EX Gardiens du Pouvoir</option>
-            <option value="Ombres Ardentes">Ombres Ardentes</option>
-            <option value="Ultra-Prisme">Ultra-Prisme</option>
-            <option value="Pouvoirs Émergents">Pouvoirs Émergents</option>
-            <option value="Tonnerre Perdu">Tonnerre Perdu</option>
-            <option value="EX Légendes Oubliées">EX Légendes Oubliées</option>
-            <option value="POP Série 9">POP Série 9</option>
-            <option value="Écarlate et Violet">Écarlate et Violet</option>
-            <option value="Astres Radieux">Astres Radieux</option>
-            <option value="Platine Platine">Platine Platine</option>
-            <option value="Nobles Victoires">Nobles Victoires</option>
-            <option value="151">151</option>
-            <option value="EX Rubis & Saphir">EX Rubis & Saphir</option>
-            <option value="Évolutions">Évolutions</option>
-            <option value="Zénith Suprême">Zénith Suprême</option>
-            <option value="Destinées Occultes">Destinées Occultes</option>
-            <option value="La Voie du Maître">La Voie du Maître</option>
-            <option value="Team Rocket">Team Rocket</option>
-            <option value="Glaciation Plasma">Glaciation Plasma</option>
-            <option value="Déstinées Radieuses">Déstinées Radieuses</option>
-            <option value="Vainqueurs Suprêmes">Vainqueurs Suprêmes</option>
-            <option value="Poings Furieux">Poings Furieux</option>
-            <option value="Primo-Choc">Primo-Choc</option>
-            <option value="EX Émeraude">EX Émeraude</option>
-            <option value="Origines Antiques">Origines Antiques</option>
-            <option value="EX Forces Cachées">EX Forces Cachées</option>
-            <option value="Origine Perdue">Origine Perdue</option>
-            <option value="Neo Discovery">Neo Discovery</option>
-            <option value="Clash des Rebelles">Clash des Rebelles</option>
-            <option value="Vigueur Spectrale">Vigueur Spectrale</option>
-            <option value="Faille Paradoxe">Faille Paradoxe</option>
-            <option value="EX Créateurs de légendes">EX Créateurs de légendes</option>
-            <option value="EX Espèces Delta">EX Espèces Delta</option>
-            <option value="Neo Destiny">Neo Destiny</option>
-            <option value="Poing de Fusion">Poing de Fusion</option>
-        </InputSelect>
-    </label>
+            <label>
+                <InputSelect class="form-control" @bind-Value="Type2" @oninput="SetType2">
+                    <option value="">Tous</option>
+                    <option value="Incolore">Incolore</option>
+                    <option value="Plante">Plante</option>
+                    <option value="Eau">Eau</option>
+                    <option value="Feu">Feu</option>
+                    <option value="Électrique">Électrique</option>
+                    <option value="Métal">Métal</option>
+                    <option value="Psy">Psy</option>
+                    <option value="Combat">Combat</option>
+                    <option value="Obscurité">Obscurité</option>
+                    <option value="Dragon">Dragon</option>
+                    <option value="Fée" class="energy energy-fairy">Fée</option>
+                </InputSelect>
+            </label>
+            <label>
+                Set de carte:
+                <InputSelect class="form-control" @bind-Value="Set" @oninput="SetSet">
+                    <option value="">Tous</option>
+                    <option value="EX Île des Dragons">EX Île des Dragons</option>
+                    <option value="Règne de Glace">Règne de Glace</option>
+                    <option value="Éclipse Cosmique">Éclipse Cosmique</option>
+                    <option value="Expedition">Expedition</option>
+                    <option value="Impulsion Turbo">Impulsion Turbo</option>
+                    <option value="Neo Genesis">Neo Genesis</option>
+                    <option value="POP Série 4">POP Série 4</option>
+                    <option value="Éveil des Légendes">Éveil des Légendes</option>
+                    <option value="EX Tempête de sable">EX Tempête de sable</option>
+                    <option value="EX Gardiens de Cristal">EX Gardiens de Cristal</option>
+                    <option value="Harmonie des Esprits">Harmonie des Esprits</option>
+                    <option value="Explosion Plasma">Explosion Plasma</option>
+                    <option value="Neo Revelation">Neo Revelation</option>
+                    <option value="Tempête Argentée">Tempête Argentée</option>
+                    <option value="Set de Base">Set de Base</option>
+                    <option value="Tempète Plasma">Tempète Plasma</option>
+                    <option value="Promo XY">Promo XY</option>
+                    <option value="EX Rouge Feu & Vert Feuille">EX Rouge Feu & Vert Feuille</option>
+                    <option value="Ténèbres Embrasées">Ténèbres Embrasées</option>
+                    <option value="HeartGold SoulSilver">HeartGold SoulSilver</option>
+                    <option value="Dragons Éxaltés">Dragons Éxaltés</option>
+                    <option value="Promo DP">Promo DP</option>
+                    <option value="Rivaux Émergeants">Rivaux Émergeants</option>
+                    <option value="Platine">Platine</option>
+                    <option value="Double Danger">Double Danger</option>
+                    <option value="Déchaînement">Déchaînement</option>
+                    <option value="Ciel Rugissant">Ciel Rugissant</option>
+                    <option value="Évolution Céleste">Évolution Céleste</option>
+                    <option value="Wizards Black Star Promos">Wizards Black Star Promos</option>
+                    <option value="Lumière Interdite">Lumière Interdite</option>
+                    <option value="Indomptable">Indomptable</option>
+                    <option value="Célébrations">Célébrations</option>
+                    <option value="Épée et Bouclier">Épée et Bouclier</option>
+                    <option value="Impact des Destins">Impact des Destins</option>
+                    <option value="EX Fantômes Holon">EX Fantômes Holon</option>
+                    <option value="Rupture Turbo">Rupture Turbo</option>
+                    <option value="Aquapolis">Aquapolis</option>
+                    <option value="Destinées Futures">Destinées Futures</option>
+                    <option value="Flammes Obsidiennes">Flammes Obsidiennes</option>
+                    <option value="Promo SWSH">Promo SWSH</option>
+                    <option value="Noir & Blanc">Noir & Blanc</option>
+                    <option value="POP Série 7">POP Série 7</option>
+                    <option value="Aube Majestueuse">Aube Majestueuse</option>
+                    <option value="Bienvenue à Kalos">Bienvenue à Kalos</option>
+                    <option value="Promo SM">Promo SM</option>
+                    <option value="Alliance Infaillible">Alliance Infaillible</option>
+                    <option value="Générations">Générations</option>
+                    <option value="Tempête">Tempête</option>
+                    <option value="Explorateurs Obscurs">Explorateurs Obscurs</option>
+                    <option value="POP Série 2">POP Série 2</option>
+                    <option value="Soleil et Lune">Soleil et Lune</option>
+                    <option value="Tempête Céleste">Tempête Céleste</option>
+                    <option value="Merveilles Secrètes">Merveilles Secrètes</option>
+                    <option value="Duels au Sommets">Duels au Sommets</option>
+                    <option value="Trésors Mystérieux">Trésors Mystérieux</option>
+                    <option value="Invasion Carmin">Invasion Carmin</option>
+                    <option value="Styles de combat">Styles de combat</option>
+                    <option value="Détective Pikachu">Détective Pikachu</option>
+                    <option value="Promo BW">Promo BW</option>
+                    <option value="Offensive Vapeur">Offensive Vapeur</option>
+                    <option value="EX Dragon">EX Dragon</option>
+                    <option value="Carte Alternative A Jaune">Carte Alternative A Jaune</option>
+                    <option value="POP Série 3">POP Série 3</option>
+                    <option value="Gardiens Ascendants">Gardiens Ascendants</option>
+                    <option value="Jungle">Jungle</option>
+                    <option value="Triomphant">Triomphant</option>
+                    <option value="Étincelles">Étincelles</option>
+                    <option value="Duo de Choc">Duo de Choc</option>
+                    <option value="Stars Étincelantes">Stars Étincelantes</option>
+                    <option value="XY">XY</option>
+                    <option value="Voltage Éclatant">Voltage Éclatant</option>
+                    <option value="EX Deoxys">EX Deoxys</option>
+                    <option value="Évolutions à Paldea">Évolutions à Paldea</option>
+                    <option value="Coffre des Dragons">Coffre des Dragons</option>
+                    <option value="EX Team Magma vs Team Aqua">EX Team Magma vs Team Aqua</option>
+                    <option value="Diamant & Perle">Diamant & Perle</option>
+                    <option value="Frontières Franchies">Frontières Franchies</option>
+                    <option value="POP Série 1">POP Série 1</option>
+                    <option value="Fossile">Fossile</option>
+                    <option value="L'appel des Légendes">L'appel des Légendes</option>
+                    <option value="Pokémon GO">Pokémon GO</option>
+                    <option value="EX Gardiens du Pouvoir">EX Gardiens du Pouvoir</option>
+                    <option value="Ombres Ardentes">Ombres Ardentes</option>
+                    <option value="Ultra-Prisme">Ultra-Prisme</option>
+                    <option value="Pouvoirs Émergents">Pouvoirs Émergents</option>
+                    <option value="Tonnerre Perdu">Tonnerre Perdu</option>
+                    <option value="EX Légendes Oubliées">EX Légendes Oubliées</option>
+                    <option value="POP Série 9">POP Série 9</option>
+                    <option value="Écarlate et Violet">Écarlate et Violet</option>
+                    <option value="Astres Radieux">Astres Radieux</option>
+                    <option value="Platine Platine">Platine Platine</option>
+                    <option value="Nobles Victoires">Nobles Victoires</option>
+                    <option value="151">151</option>
+                    <option value="EX Rubis & Saphir">EX Rubis & Saphir</option>
+                    <option value="Évolutions">Évolutions</option>
+                    <option value="Zénith Suprême">Zénith Suprême</option>
+                    <option value="Destinées Occultes">Destinées Occultes</option>
+                    <option value="La Voie du Maître">La Voie du Maître</option>
+                    <option value="Team Rocket">Team Rocket</option>
+                    <option value="Glaciation Plasma">Glaciation Plasma</option>
+                    <option value="Déstinées Radieuses">Déstinées Radieuses</option>
+                    <option value="Vainqueurs Suprêmes">Vainqueurs Suprêmes</option>
+                    <option value="Poings Furieux">Poings Furieux</option>
+                    <option value="Primo-Choc">Primo-Choc</option>
+                    <option value="EX Émeraude">EX Émeraude</option>
+                    <option value="Origines Antiques">Origines Antiques</option>
+                    <option value="EX Forces Cachées">EX Forces Cachées</option>
+                    <option value="Origine Perdue">Origine Perdue</option>
+                    <option value="Neo Discovery">Neo Discovery</option>
+                    <option value="Clash des Rebelles">Clash des Rebelles</option>
+                    <option value="Vigueur Spectrale">Vigueur Spectrale</option>
+                    <option value="Faille Paradoxe">Faille Paradoxe</option>
+                    <option value="EX Créateurs de légendes">EX Créateurs de légendes</option>
+                    <option value="EX Espèces Delta">EX Espèces Delta</option>
+                    <option value="Neo Destiny">Neo Destiny</option>
+                    <option value="Poing de Fusion">Poing de Fusion</option>
+                </InputSelect>
+            </label>
 
-    <label>
-        <button class="form-control" @onclick="SearchButton">Rechercher</button>
-    </label>
+            <label>
+                <button class="form-control" @onclick="SearchButton">Rechercher</button>
+            </label>
+        </div>
+    </div>		
 </div>
-
 
 
 
@@ -195,7 +201,35 @@
             </div>
 	    }
     </div>
+
+    @if (pokémons.Count == 0)
+	{
+		<div class="alert alert-danger" role="alert">
+			Aucun résultat
+		</div>
+	} 
+    else if (pokémons.Count % PageSize == 0)
+	{
+    <button class="btn btn-primary" @onclick="SearchButton">
+            <span class="bi bi-search" aria-hidden="true"></span>
+        Charger plus
+    </button>
+	}
 </div>
+
+
+<button class="btn btn-primary btn-scrollup" onclick="ScrollUp()">
+    <span class="bi bi-arrow-up" aria-hidden="true"></span>
+</button>
+
+
+<script>
+    function ScrollUp() {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+    }
+</script>
+
 
 @code {
     [Parameter] public required Func<string, Task<IEnumerable<Pokémon>?>> Searcher { get; set; }

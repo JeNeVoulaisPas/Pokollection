@@ -2,37 +2,42 @@
 @inject PokémonService pokémonService
 @using PokéService.Entities;
 
-<div class="card mb-4 rounded">
-	<div class="card-container rounded">
-		<div class="card-image rounded bg-dark">
-			<img id="card-@(id)" src="@(url)" class="bg-dark img-fluid rounded-2 mx-auto d-block @(loading ? "card-image-blur": "")" alt="@(pokémon.Name)" @onload="Loaded" @onclick="OnClick" />
+<div class="card mb-4 rounded-3 bg-dark">
+	<div class="item-card-container bg-dark rounded-3">
+		<div class="item-card-image bg-dark rounded-3">
+			<a href="/pokémon/@(pokémon.Id)">
+				<img src="@(url)" class="bg-dark rounded-3 img-fluid mx-auto d-block @(loading ? "item-card-image-blur": "")" alt="@(pokémon.Name)" @onload="Loaded" />
+			</a>
 		</div>
-		<div class="card-spinner">
+		<div class="item-card-spinner">
 			@if (loading)
 			{
-				<div id="spinner-@(id)" class="spinner-border text-primary" role="status">
+				<div class="spinner-border text-primary" role="status">
 					<span class="visually-hidden">Loading...</span>
 				</div>
 			}
 		</div>
 
-
 		<AuthorizeView Roles="User">
 			<Authorized>
-				<div class="card-button">
-					@if (pokémon.Possessed)
-					{
-						<button class="btn btn-outline-danger" @onclick="OnDelete">
-							<span class="bi bi-trash" aria-hidden="true"></span>
-						</button>
-					}
-					else
-					{
-						<button class="btn btn-outline-success card-image-blur" @onclick="OnAdd">
-							<span class="bi bi-plus" aria-hidden="true"></span>
-						</button>
-					}
-				</div>
+				@if (!loading)
+				{
+					<div class="item-card-button">
+						@if (pokémon.Possessed)
+						{
+							<button class="btn btn-danger" @onclick="OnDelete">
+								<span class="bi bi-trash" aria-hidden="true"></span>
+							</button>
+						}
+						else
+						{
+							<button class="btn btn-success card-image-blur" @onclick="OnAdd">
+								<span class="bi bi-plus" aria-hidden="true"></span>
+							</button>
+						}
+					</div>
+				}
+				
 			</Authorized>
 		</AuthorizeView>
 
@@ -83,11 +88,5 @@
 	{
 		if (await pokémonService.DeleteCard(pokémon.Id)) pokémon.Possessed = false;
 		if (OnlyDeletable && Deleter is not null) await Deleter(pokémon);
-	}
-
-
-	public void OnClick()
-	{
-		NavigationManager.NavigateTo($"/pokémon/{pokémon.Id}");
 	}
 }
