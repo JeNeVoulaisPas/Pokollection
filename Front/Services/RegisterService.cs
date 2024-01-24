@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
@@ -28,7 +29,6 @@ namespace Front.Services
           
             if (!emailValidationAttribute.IsValid(email))
             {
-                
                 return new CreateUserResult { IsSuccess = false, ErrorMessage = "Format d'e-mail non valide." };
             }
 
@@ -40,6 +40,16 @@ namespace Front.Services
             if (string.IsNullOrWhiteSpace(password))
             {
                 return new CreateUserResult { IsSuccess = false, ErrorMessage = "Le mot de passe ne peut pas être vide." };
+            }
+
+            if (!IsAlphanum(password))
+            {
+                return new CreateUserResult { IsSuccess = false, ErrorMessage = "Le mot de passe ne peut contenir que des caracteres alphanumerique" };
+            }
+
+            if (!IsAlphanum(username))
+            {
+                return new CreateUserResult { IsSuccess = false, ErrorMessage = "Le nom d'utilisateur ne peut contenir que des caracteres alphanumerique" };
             }
 
 
@@ -59,6 +69,11 @@ namespace Front.Services
             }
         }
 
+        private bool IsAlphanum(string str)
+        {
+            Regex rg = new Regex(@"^[\p{L}0-9]*$");
+            return rg.IsMatch(str);
+        }
 
         /*
         private bool IsValidEmail(string email)

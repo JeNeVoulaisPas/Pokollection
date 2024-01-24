@@ -144,12 +144,13 @@ h1 {
     margin-bottom: 20px;
     border-color:darkblue;
     border-style: solid;
+    height:20%;
 }
 
 
     .titleBanner img {
         max-width: 100%;
-        height: auto;
+        height: 100%;
         display: block;
         margin: 0 auto;
     }
@@ -167,6 +168,22 @@ h1 {
     margin: 0 auto;
     border-color: darkblue;
     border-style: solid;
+    width:80%;
+}
+
+.horizontal-display {
+    color: black;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 50px;
+    max-width: 600px;
+    margin: 0 auto;
+    border-color: darkblue;
+    border-style: solid;
+    width: 100%;
 }
 
 label {
@@ -200,12 +217,13 @@ label {
     margin: 0 -15px;
 }
 
+/*
 .col-md-3, .col-sm-6 {
     flex: 0 0 25%;
     max-width: 25%;
     padding: 0 15px;
     box-sizing: border-box;
-}
+}*/
 
 .Pokedex {
     position: relative;
@@ -216,7 +234,7 @@ label {
 #Pokedex {
     display: block;
     margin: 0 auto;
-    z-index: 1; 
+    z-index: -1; 
     width: 100%;    
 }
 
@@ -225,9 +243,72 @@ label {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 2;
+    z-index: 0;
     width:50%;
     height:80%;
+}
+
+.card_mb-4 {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card_imge{
+    width : 100%;
+    align-content: flex-start ;
+    margin-right: 10%;
+}
+
+.img-fluid rounded mx-auto d-block{
+    width : 10%;
+    margin-right: 10%;
+}
+
+
+
+.side {
+    flex: 30%;
+    padding: 20px;
+}
+
+
+.main {
+    flex: 70%;
+    padding: 20px;
+}
+
+.side h1{
+font-family: 'Oswald', sans-serif;
+    font-size: 36px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+}
+.side h3{
+    font-family: 'Oswald', sans-serif;
+    color :brown;
+}
+
+.add_or_connect {
+    text-align: center;
+    padding-top:5%;
+}
+
+.card-body {
+    margin-top: 5%;
+    padding : 2%;
+    background-color: #302c2c;
+    border: solid;
+    border-radius: 20px;
+}
+
+.set_image {
+    width: 40%;
+    border-radius: 20px;
+    -ms-align-content: inherit;
+    -webkit-align-content: inherit;
+    align-content: inherit;
 }
 
 

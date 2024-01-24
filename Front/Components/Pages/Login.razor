@@ -6,13 +6,16 @@
 
 <PageTitle>Login</PageTitle>
 
+<link rel="stylesheet" href="style.css" />
+
 <div class="titleBanner">
-    <img src="images/Connection.png" alt="Connection Image">
+    <img src="images/Connexion.png" alt="Connection Image">
 </div>
 
+<div class="form-horizontal">
 <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
-    <InputText @bind-Value="loginModel.Username" />
-    <InputText @bind-Value="loginModel.Password" type="password" />
+    <InputText @bind-Value="loginModel.Username" placeholder="Nom d'utilisateur" class="form-control" />
+    <InputText @bind-Value="loginModel.Password" type="password" placeholder="Mot de passe" class="form-control" />
     <button type="submit">Login</button>
 
     @if (!string.IsNullOrEmpty(errorMessage))
@@ -20,6 +23,7 @@
         <p class="error">@errorMessage</p>
     }
 </EditForm>
+</div>
 
 @code {
     private LoginModel loginModel = new LoginModel();
