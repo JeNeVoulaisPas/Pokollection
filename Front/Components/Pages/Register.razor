@@ -10,17 +10,19 @@
 <div class="titleBanner">
     <img src="images/Inscription.png" alt="Inscription Image">
 </div>
+<div class="form-horizontal">
 <EditForm Model="@userCreateModel" OnValidSubmit="HandleRegister">
-    <InputText @bind-Value="userCreateModel.Email" typeof="email"/>
-    <InputText @bind-Value="userCreateModel.Name" />
-    <InputText @bind-Value="userCreateModel.Password" type="password" />
-    <button type="submit">Register</button>
+    <InputText @bind-Value="userCreateModel.Email" typeof="email" placeholder="Mail" class="form-control"/>
+        <InputText @bind-Value="userCreateModel.Name" placeholder="Nom d'utilisateur" class="form-control" />
+        <InputText @bind-Value="userCreateModel.Password" type="password" placeholder="Mot de passe" class="form-control" />
+    <button type="submit">S'inscrire</button>
 
     @if (!string.IsNullOrEmpty(errorMessage))
     {
         <p class="error">@errorMessage</p>
     }
 </EditForm>
+</div>
 
 @code {
     private UserCreateModel userCreateModel = new UserCreateModel();
@@ -31,7 +33,7 @@
     {
         registerService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider);
 
-        var user = await registerService.CreateUser(userCreateModel.Email, userCreateModel.Name, userCreateModel.Password); //.Result
+        var user = await registerService.CreateUser(userCreateModel.Email, userCreateModel.Name, userCreateModel.Password);
         if (user.IsSuccess)
         {
             NavigationManager.NavigateTo("/login");

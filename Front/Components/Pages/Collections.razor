@@ -10,8 +10,10 @@
     <img src="images/Collections.png" alt="Collections Image">
 </div>
 
-<h1> Découvre les collections de tes amis !!!</h1>
-<InputText @bind-Value="code" @bind-Value:event="oninput" placeholder="Entre un code Amis" />
+<div class="horizontal-display">
+    <h1> Découvre les collections de tes amis !!!</h1>
+    <InputText @bind-Value="code" @bind-Value:event="oninput" placeholder="Entre un code Amis" />
+</div>
 
 @code {
 	private string? code { get; set; }
