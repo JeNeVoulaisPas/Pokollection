@@ -15,17 +15,32 @@ namespace Front.Services
 
         public PokémonService(HttpClient httpClient) : base(httpClient) { }
 
-        public async Task<Pokémon?> GetPokémon(string id)
+        public async Task<int?> GetUserIdAsync()
         {
-            var res = await _httpClient.GetAsync($"api/Poké/card/{id}");
+			return (_auth == null)? null: await _auth.GetAuthenticationIdAsync();
+		}
+
+        public async Task<Pokémon?> GetPokémon(string id)
+		{
+			var uid = await GetUserIdAsync();
+			if (uid is not null) id += $"?id={uid}";
+
+			var res = await _httpClient.GetAsync($"api/Poké/card/{id}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<Pokémon>();
             return null;
         }
 
         public async Task<IEnumerable<Pokémon>?> Search(string query = "")
-        {
-            var res = await _httpClient.GetAsync($"api/Poké/search{query}");
+		{
+			var id = await GetUserIdAsync();
+            if (id is not null)
+            {
+                if (query.Length > 0) query += "&";
+                else query = "?";
+                query += $"id={id}";
+            }
+			var res = await _httpClient.GetAsync($"api/Poké/search{query}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
             return null;
@@ -33,12 +48,8 @@ namespace Front.Services
 
         public async Task<IEnumerable<Pokémon>?> GetCollection(string query = "", int? id = null)
         {
-            if (id == null)
-            {
-                if (_auth == null) return null;
-                id = await _auth.GetAuthenticationIdAsync();
-            }
-            if (id == -1) return null;
+            if (id is null) id = await GetUserIdAsync();
+            if (id is null) return null;
 
             var res = await _httpClient.GetAsync($"api/Poké/collection/{id}/card{query}");
 
@@ -46,19 +57,38 @@ namespace Front.Services
             return null;
         }
 
-        public async Task<bool> AddCard(int cid)
+        public async Task<bool> AddCard(string cid)
         {
             var res = await _httpClient.PostAsync($"api/Poké/collection/card/{cid}", null);
 
             return res.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteCard(int cid)
+        public async Task<bool> DeleteCard(string cid)
         {
             var res = await _httpClient.DeleteAsync($"api/Poké/collection/card/{cid}");
 
             return res.IsSuccessStatusCode;
         }
+
+        public string GetTypeClass(string type)
+        {
+            return type switch
+            {
+				"Plante" => "energy-grass",
+				"Feu" => "energy-fire",
+				"Eau" => "energy-water",
+				"Psy" => "energy-psychic",
+				"Combat" => "energy-fighting",
+				"Obscurité" => "energy-darkness",
+				"Métal" => "energy-metal",
+				"Fée" => "energy-fairy",
+				"Dragon" => "energy-dragon",
+				"Électrique" => "energy-lightning",
+				"Incolore" => "energy-colorless",
+				_ => "energy-colorless",
+			};
+		}
     }
 }
 

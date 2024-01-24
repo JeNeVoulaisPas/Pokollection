@@ -43,7 +43,7 @@
         <InputSelect class="form-control" @bind-Value="Type2" @oninput="SetType2">
             <option value="">Tous</option>
             <option value="Incolore">Incolore</option>
-            <option value="Plante">Plante</option>
+            <option value="Plante" class="energy @pokémonService.GetTypeClass("Plante")">Plante</option>
             <option value="Eau">Eau</option>
             <option value="Feu">Feu</option>
             <option value="Électrique">Électrique</option>
@@ -52,7 +52,7 @@
             <option value="Combat">Combat</option>
             <option value="Obscurité">Obscurité</option>
             <option value="Dragon">Dragon</option>
-            <option value="Fée">Fée</option>
+            <option value="Fée" class="energy energy-fairy">Fée</option>
         </InputSelect>
     </label>
     <label>
@@ -191,7 +191,7 @@
         @foreach (var pokémon in pokémons)
 	    {
             <div class="col-md-3 col-sm-6">
-                <CardItem pokémon="@pokémon" Addable="Addable"/>
+                <CardItem pokémon="@pokémon" OnlyDeletable="OnlyDeletable" Deleter="OnDelete" />
             </div>
 	    }
     </div>
@@ -199,7 +199,7 @@
 
 @code {
     [Parameter] public required Func<string, Task<IEnumerable<Pokémon>?>> Searcher { get; set; }
-    [Parameter] public required bool Addable { get; set; } = true;
+    [Parameter] public required bool OnlyDeletable { get; set; } = false;
 
     public List<Pokémon> pokémons = new();
 
@@ -244,6 +244,10 @@
     public int PageSize { get; set; } = 48; // n * row size
     private int? lastHash { get; set; }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await Search();
+    }
 
     public async Task SearchButton()
     {
@@ -292,7 +296,7 @@
                         }
                     }
 
-					if (same) return;
+                    if (same) return;
                 }
                 Console.WriteLine("Clear");
                 pokémons.Clear();
@@ -301,6 +305,13 @@
             Console.WriteLine("Add");
             pokémons.AddRange(pk);
         }
+    }
+
+    public async Task OnDelete(Pokémon pokémon)
+    {
+        Console.WriteLine("Delete");
+        pokémons.Remove(pokémon);
+        StateHasChanged();
     }
 }
 

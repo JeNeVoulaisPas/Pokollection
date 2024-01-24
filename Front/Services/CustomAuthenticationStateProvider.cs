@@ -63,7 +63,7 @@ namespace Front.Services
             return await Task.FromResult(new AuthenticationState(_currentUser));
         }
 
-        public  async Task<int> GetAuthenticationIdAsync()
+        public async Task<int?> GetAuthenticationIdAsync()
         {
             var userSession = await _sessionStorage.GetAsync<UserDTO>("User");
             if (userSession.Success && userSession.Value != null)
@@ -75,7 +75,7 @@ namespace Front.Services
             {
                 _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
             }
-            return -1;
+            return null;
         }
     }
 }

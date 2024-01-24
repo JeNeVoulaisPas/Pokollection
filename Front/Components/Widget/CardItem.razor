@@ -1,19 +1,27 @@
 ﻿@inject NavigationManager NavigationManager
+@inject PokémonService pokémonService
 @using PokéService.Entities;
 
 <div class="card mb-4">
+	<h3>@(pokémon.Name) @pokémon.LocalId / @pokémon.Total</h3>
 	<div class="card-ratio">
-		<img id="card-@(id)" src="@(url)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon.Name)" @onload="Loaded">
+		<img id="card-@(id)" src="@(url)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon.Name)" @onload="Loaded" @onclick="OnClick"/>
 		@if (loading)
 		{
 			<div id="spinner-@(id)" class="spinner-border text-primary" role="status">
 				<span class="visually-hidden">Loading...</span>
 			</div>
 		}
+		@if (pokémon.Possessed)
+		{
+			// button to delete the card
+			<button class="btn btn-primary" @onclick="OnDelete">Supprimer</button>
+			
+		} else {
+			// button to add the card
+			<button class="btn btn-primary" @onclick="OnAdd">Ajouter</button>
+		}
 	</div>
-	
-	
-	<h3>@(pokémon.Name)</h3>
 </div>
 
 
@@ -22,7 +30,8 @@
 		get { return _pk; }
 		set { Loading(value); _pk = value; }
 	}
-	[Parameter] public required bool Addable { get; set; }
+	[Parameter] public required bool OnlyDeletable { get; set; } = false;
+	[Parameter] public Func<Pokémon, Task>? Deleter { get; set; }
 
 	static int count = 0;
 
@@ -48,6 +57,17 @@
 	protected override void OnInitialized()
 	{
 		id = count++;
+	}
+
+	public async Task OnAdd()
+	{
+		if(await pokémonService.AddCard(pokémon.Id)) pokémon.Possessed = true;
+	}
+
+	public async Task OnDelete()
+	{
+		if (await pokémonService.DeleteCard(pokémon.Id)) pokémon.Possessed = false;
+		if (OnlyDeletable && Deleter is not null) await Deleter(pokémon);
 	}
 
 
