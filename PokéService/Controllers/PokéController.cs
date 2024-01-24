@@ -177,15 +177,27 @@ namespace PokéService.Controllers
 
         // Pokémon: api/Poké/card
 
-        // GET: api/Poké/card/5
-        [HttpGet("card/{id}")]
-        public async Task<ActionResult<Pokémon>> GetCard(string id)
-        {
-            var p = await _context.Pokémon.FindAsync(id);
+        // GET: api/Poké/card/5?id=
+        [HttpGet("card/{cid}")]
+        public async Task<ActionResult<Pokémon>> GetCard(string cid, int? id = null)  // user id to attach the "possessed" property, ignored if invalid
+		{
+            var p = await _context.Pokémon.FindAsync(cid);
 
             if (p is null) return NotFound();
 
-            return Ok(p);
+            if (id is not null)
+            {
+                var c = await _context.CardsCollection.FindAsync(id);
+
+                if (c is not null)
+                {
+					var ca = c.CardsArray;
+
+					if (ca is not null) p.Possessed = ca.Contains(p.Id);
+				}
+            }
+
+			return Ok(p);
         }
 
         // GET: api/Poké/search?id=&name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=

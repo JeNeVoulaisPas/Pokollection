@@ -21,8 +21,11 @@ namespace Front.Services
 		}
 
         public async Task<Pokémon?> GetPokémon(string id)
-        {
-            var res = await _httpClient.GetAsync($"api/Poké/card/{id}");
+		{
+			var uid = await GetUserIdAsync();
+			if (uid is not null) id += $"?id={uid}";
+
+			var res = await _httpClient.GetAsync($"api/Poké/card/{id}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<Pokémon>();
             return null;

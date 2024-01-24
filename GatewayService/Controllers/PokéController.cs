@@ -164,17 +164,19 @@ namespace GatewayService.Controllers
         // Pokémon: api/Poké/card
 
 
-
-        // GET: api/Poké/card/5
-        [HttpGet("card/{id}")]
-        public async Task<ActionResult<Pokémon>> GetCard(string id)
+		// GET: api/Poké/card/5?id=
+		[HttpGet("card/{cid}")]
+		public async Task<ActionResult<Pokémon>> GetCard(string cid, int? id = null)  // user id to attach the "possessed" property, ignore
         {
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
             {
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-                HttpResponseMessage response = await client.GetAsync($"api/Poké/card/{id}");
+                string query = $"{cid}";
+                if (id is not null) query += $"?id={id}";
+
+                HttpResponseMessage response = await client.GetAsync($"api/Poké/card/{query}");
 
                 // Check if the response status code is 200 (OK)
                 if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<Pokémon>());
