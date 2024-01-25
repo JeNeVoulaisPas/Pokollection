@@ -18,7 +18,7 @@
 		<div class="side">
 			<h1>@(pokémon.Name)</h1>
 			<div class="card_image">
-				<img src="@(pokémon.Image)" class="img-fluid rounded mx-auto d-block" alt="@(pokémon.Name)" @onload="Loaded"/>
+				<img src="@(pokémon.Image)" class="img-fluid rounded mx-auto d-block" id="Image_cardParent__goN_k" alt="@(pokémon.Name)" @onload="Loaded" />
 				@if (loading)
 				{
 					<div class="spinner-border text-primary" role="status">
@@ -56,13 +56,13 @@
 					<div class="side">
 						<h3 class="card-title">@pokémon.Name</h3>
 						<p class="card-text">@pokémon.Description</p>
-						<p class="card-text">Stade: @pokémon.Stage</p>
+						<p class="card-text">Stade : @pokémon.Stage</p>
 						@if (@pokémon.EvolveFrom != null)
 						{
 							<p class="card-text">Evolution de @pokémon.EvolveFrom</p>
 						}
-						<p class="card-text">Points de vie: @pokémon.Hp</p>
-						<p class="card-text">Points de retraite: @pokémon.Retreat</p>
+						<p class="card-text">Points de vie : @pokémon.Hp</p>
+						<p class="card-text">Points de retraite : @pokémon.Retreat</p>
 						<p class="card-text">Set @pokémon.Set</p>
 					</div>
 					<div class="main">
@@ -87,7 +87,7 @@
 
 				@if (@pokémon.Item != null)
 				{
-					<p class="card-text">Objet: @pokémon.Item.Name
+					<p class="card-text">Objet : @pokémon.Item.Name
 						@pokémon.Item.Effect
 					</p>
 				}
@@ -162,8 +162,8 @@
 					</p>
 				}
 
-				<p class="card-text">Numéro @pokémon.LocalId / @pokémon.Total</p>
-				<p class="card-text">Rareté: @pokémon.Rarity</p>
+				<p class="card-text">Numéro : @pokémon.LocalId / @pokémon.Total</p>
+				<p class="card-text">Rareté : @pokémon.Rarity</p>
 				<p class="card-text">Illustrateur: @pokémon.Illustrator</p>
 			</div>
 		</div>
