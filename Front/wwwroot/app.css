@@ -50,18 +50,6 @@ h1:focus {
     border-color: #929292;
 }
 
-.card-ratio {
-    padding-top:137.5%;
-}
-
-.energy {
-    background-image: url(energies.png);
-    height: 25px;
-    width: 25px;
-    display: inline-block;
-    vertical-align: sub;
-    margin-right: 8px;
-}
 
 .energy {
     background-image: url(energies.png);

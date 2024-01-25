@@ -310,3 +310,50 @@ font-family: 'Oswald', sans-serif;
     -webkit-align-content: inherit;
     align-content: inherit;
 }
+
+
+.item-card-container {
+    position: relative;
+    padding-bottom: 137.5%;
+}
+
+.item-card-image, .item-card-spinner {
+    position: absolute;
+}
+
+.item-card-image {
+}
+
+.item-card-image-blur {
+    filter: blur(5px);
+}
+
+.item-card-button::before {
+    background-color: rgba(1, 1, 1, 1);
+    z-index: -1;
+}
+.item-card-button::after {
+    background-color: rgba(1, 0, 1, 1);
+}
+
+.item-card-button {
+    position: absolute;
+    right: 5%;
+    bottom: 5%;
+}
+
+.item-card-spinner {
+    z-index: 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.btn-scrollup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+}
