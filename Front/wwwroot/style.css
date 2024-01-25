@@ -155,7 +155,7 @@ h1 {
         margin: 0 auto;
     }
 
-
+/*
 .form-horizontal {
     color: black;
     margin-left: 0;
@@ -169,7 +169,31 @@ h1 {
     border-color: darkblue;
     border-style: solid;
     width:80%;
+}*/
+
+.form-horizontal {
+    color: black;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid darkblue;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width:100%;
 }
+
+    .form-horizontal label {
+        flex: 1;
+        margin: 0 10px;
+        text-align: left;
+    }
+
+    .form-horizontal button {
+        flex: 1;
+        margin-top: 10px;
+    }
 
 .horizontal-display {
     color: black;
@@ -207,8 +231,24 @@ label {
     cursor: pointer;
 }
 
-.container {
-    margin-top: 20px;
+#validate {
+    background-color: brown;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+#validate:hover {
+    background-color:crimson;
+}
+
+label h2{
+font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+    max-width: 100%;
+
 }
 
 .row {
@@ -225,7 +265,7 @@ label {
     box-sizing: border-box;
 }*/
 
-.Pokedex {
+.SearchGrid {
     position: relative;
     text-align: center;
     width: 100%;
@@ -238,6 +278,7 @@ label {
     width: 100%;    
 }
 
+/*
 .Formedex {
     position: absolute;
     top: 50%;
@@ -247,6 +288,29 @@ label {
     width:50%;
     height:80%;
 }
+*/
+
+.Pokedex {
+    position: relative;
+    align-content: center;
+    width: 100%;
+}
+
+.container {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-52%, -60%);
+    z-index: 0;
+    width: 50%;
+    height: 80%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+}
+
+
 
 .card_mb-4 {
     width: 100%;
