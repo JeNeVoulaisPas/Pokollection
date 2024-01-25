@@ -81,20 +81,57 @@ namespace Front.Services
             return type switch
             {
                 "Tous" => "energy-all",
-				"Plante" => "energy-grass",
-				"Feu" => "energy-fire",
-				"Eau" => "energy-water",
-				"Psy" => "energy-psychic",
-				"Combat" => "energy-fighting",
-				"Obscurité" => "energy-darkness",
-				"Métal" => "energy-metal",
-				"Fée" => "energy-fairy",
-				"Dragon" => "energy-dragon",
-				"Électrique" => "energy-lightning",
-				"Incolore" => "energy-colorless",
-				_ => "energy-colorless",
-			};
-		}
+                "Plante" => "energy-grass",
+                "Feu" => "energy-fire",
+                "Eau" => "energy-water",
+                "Psy" => "energy-psychic",
+                "Combat" => "energy-fighting",
+                "Obscurité" => "energy-darkness",
+                "Métal" => "energy-metal",
+                "Fée" => "energy-fairy",
+                "Dragon" => "energy-dragon",
+                "Électrique" => "energy-lightning",
+                "Incolore" => "energy-colorless",
+                _ => "energy-colorless",
+            };
+        }
+
+        // may be improved...
+        public string[] GetCategories()
+        {
+            return new string[] { "Toutes les cartes", "Cartes Pokémon", "Cartes Énergies", "Cartes Dresseurs" };
+        }
+
+        public string GetCategoryClass(string cat)
+        {
+            return cat switch
+            {
+                "Cartes Pokémon" => "pkmn-logo-pkmn",
+                "Cartes Énergies" => "pkmn-logo-energy",
+                "Cartes Dresseurs" => "pkmn-logo-trainer",
+                _ => "pkmn-logo-all",
+            };
+        }
+        public string GetCategoryValue(string cat)
+        {
+            return cat switch
+            {
+                "Cartes Pokémon" => "0",
+                "Cartes Énergies" => "1",
+                "Cartes Dresseurs" => "2",
+                _ => "",
+            };
+        }
+        public string GetCategoryText(string cat)
+        {
+            return cat switch
+            {
+                 "0" => "Cartes Pokémon",
+                "1" => "Cartes Énergies",
+                "2" => "Cartes Dresseurs",
+                _ => "Toutes les cartes",
+            };
+        }
     }
 }
 

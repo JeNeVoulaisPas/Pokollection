@@ -15,15 +15,17 @@
                 <InputText class="form-control" @bind-Value="Name" @oninput="SetName" placeholder="Pikachu" />
             </label>
 
-            <label>
-                Type de carte:
-                <InputSelect class="form-control" @bind-Value="Category" @oninput="SetCategory">
-                    <option value="">Tous</option>
-                    <option value="0">Pokémon</option>
-                    <option value="1">Energie</option>
-                    <option value="2">Dresseur</option>
-                </InputSelect>
-            </label>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="pkmn-logo @(Category is not null ? pokémonService.GetCategoryClass(pokémonService.GetCategoryText(Category)): "")"></span>@pokémonService.GetCategoryText(Category)
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach (var cat in pokémonService.GetCategories())
+                    {
+                        <li><button class="dropdown-item" @onclick="async () => await SetCategory(pokémonService.GetCategoryValue(cat))"><span class="pkmn-logo @pokémonService.GetCategoryClass(cat)"></span>@cat</button></li>
+                    }
+                </ul>
+            </div>
 
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -231,9 +233,6 @@
     public string? Type1 { get; set; } = "Tous";
     public string? Type2 { get; set; } = "Tous";
     public string? Set { get; set; }
-    
-    private string type1 = "Tous";
-    private string type2 = "Tous";
 
     public async Task SetName(ChangeEventArgs e)
     {
@@ -241,27 +240,15 @@
         await Search(true);
     }
 
-    public async Task SetCategory(ChangeEventArgs e)
+    public async Task SetCategory(string s)
     {
-        Category = e.Value?.ToString();
-        await Search(true);
-    }
-
-    public async Task SetType1(ChangeEventArgs e)
-    {
-        Type1 = e.Value?.ToString();
+        Category = s;
         await Search(true);
     }
 
     public async Task SetType1(string s)
     {
         Type1 = s;
-        await Search(true);
-    }
-
-    public async Task SetType2(ChangeEventArgs e)
-    {
-        Type2 = e.Value?.ToString();
         await Search(true);
     }
 
