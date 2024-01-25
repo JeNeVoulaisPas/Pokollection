@@ -5,13 +5,12 @@
 @using System.Text;
 
 
-<div class="Pokedex">
-	<img id="Pokedex" src="images/Pokedex.png" alt="Pokedex">
-	<div class="Formedex">
+<div class="SearchGrid">
+    <div class="Formedex">
 
         <div class="form-horizontal">
             <label>
-                Nom de la carte:
+                <h2>Nom de la carte:</h2>
                 <InputText class="form-control" @bind-Value="Name" @oninput="SetName" placeholder="Pikachu" />
             </label>
 
@@ -175,51 +174,55 @@
             </label>
 
             <label>
-                <button class="form-control" @onclick="SearchButton">Rechercher</button>
+                <button id="validate" class="form-control" @onclick="SearchButton">Rechercher</button>
             </label>
         </div>
-    </div>		
-</div>
+        <div class="Pokedex">
+            <img id="Pokedex" src="images/Pokedex.png" alt="Pokedex">
 
+            <div class="container">
+                <div class="row">
+                    @foreach (var pokémon in pokémons)
+                    {
+                        <div class="col-md-3 col-sm-6">
+                            <CardItem pokémon="@pokémon" OnlyDeletable="OnlyDeletable" Deleter="OnDelete" />
+                        </div>
+                    }
+                </div>
 
-
-<div class="container">
-    <div class="row">
-        @foreach (var pokémon in pokémons)
-	    {
-            <div class="col-md-3 col-sm-6">
-                <CardItem pokémon="@pokémon" OnlyDeletable="OnlyDeletable" Deleter="OnDelete" />
+                @if (pokémons.Count == 0)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Aucun résultat
+                    </div>
+                }
+                else if (pokémons.Count % PageSize == 0)
+                {
+                    <button class="btn btn-primary" @onclick="SearchButton">
+                        <span class="bi bi-search" aria-hidden="true"></span>
+                        Charger plus
+                    </button>
+                }
             </div>
-	    }
-    </div>
 
-    @if (pokémons.Count == 0)
-	{
-		<div class="alert alert-danger" role="alert">
-			Aucun résultat
-		</div>
-	} 
-    else if (pokémons.Count % PageSize == 0)
-	{
-    <button class="btn btn-primary" @onclick="SearchButton">
-            <span class="bi bi-search" aria-hidden="true"></span>
-        Charger plus
-    </button>
-	}
+
+            <button class="btn btn-primary btn-scrollup" onclick="ScrollUp()">
+                <span class="bi bi-arrow-up" aria-hidden="true"></span>
+            </button>
+
+
+            <script>
+                function ScrollUp() {
+                    document.body.scrollTop = 0; // For Safari
+                    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
+                }
+            </script>
+        </div>
+    </div>
 </div>
 
 
-<button class="btn btn-primary btn-scrollup" onclick="ScrollUp()">
-    <span class="bi bi-arrow-up" aria-hidden="true"></span>
-</button>
 
-
-<script>
-    function ScrollUp() {
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
-    }
-</script>
 
 
 @code {
