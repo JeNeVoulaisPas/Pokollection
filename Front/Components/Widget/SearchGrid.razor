@@ -25,41 +25,30 @@
                 </InputSelect>
             </label>
 
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="energy @(Type1 is not null ? pokémonService.GetTypeClass(Type1): "")"></span>@Type1
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach (var type in pokémonService.GetTypes())
+                    {
+                        <li><button class="dropdown-item" @onclick="async () => await SetType1(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
+                    }
+                </ul>
+            </div>
+            
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="energy @(Type2 is not null ? pokémonService.GetTypeClass(Type2): "")"></span>@Type2
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach (var type in pokémonService.GetTypes())
+                    {
+                        <li><button class="dropdown-item" @onclick="async () => await SetType2(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
+                    }
+                </ul>
+            </div>
 
-            <label>
-                Type du pokémon:
-                <InputSelect class="form-control" @bind-Value="Type1" @oninput="SetType1">
-                    <option value="">Tous</option>
-                    <option value="Incolore">Incolore</option>
-                    <option value="Plante">Plante</option>
-                    <option value="Eau">Eau</option>
-                    <option value="Feu">Feu</option>
-                    <option value="Électrique">Électrique</option>
-                    <option value="Métal">Métal</option>
-                    <option value="Psy">Psy</option>
-                    <option value="Combat">Combat</option>
-                    <option value="Obscurité">Obscurité</option>
-                    <option value="Dragon">Dragon</option>
-                    <option value="Fée">Fée</option>
-                </InputSelect>
-            </label>
-
-            <label>
-                <InputSelect class="form-control" @bind-Value="Type2" @oninput="SetType2">
-                    <option value="">Tous</option>
-                    <option value="Incolore">Incolore</option>
-                    <option value="Plante">Plante</option>
-                    <option value="Eau">Eau</option>
-                    <option value="Feu">Feu</option>
-                    <option value="Électrique">Électrique</option>
-                    <option value="Métal">Métal</option>
-                    <option value="Psy">Psy</option>
-                    <option value="Combat">Combat</option>
-                    <option value="Obscurité">Obscurité</option>
-                    <option value="Dragon">Dragon</option>
-                    <option value="Fée" class="energy energy-fairy">Fée</option>
-                </InputSelect>
-            </label>
             <label>
                 Set de carte:
                 <InputSelect class="form-control" @bind-Value="Set" @oninput="SetSet">
@@ -239,9 +228,12 @@
 
     public string? Name { get; set; }
     public string? Category { get; set; }
-    public string? Type1 { get; set; }
-    public string? Type2 { get; set; }
+    public string? Type1 { get; set; } = "Tous";
+    public string? Type2 { get; set; } = "Tous";
     public string? Set { get; set; }
+    
+    private string type1 = "Tous";
+    private string type2 = "Tous";
 
     public async Task SetName(ChangeEventArgs e)
     {
@@ -261,9 +253,21 @@
         await Search(true);
     }
 
+    public async Task SetType1(string s)
+    {
+        Type1 = s;
+        await Search(true);
+    }
+
     public async Task SetType2(ChangeEventArgs e)
     {
         Type2 = e.Value?.ToString();
+        await Search(true);
+    }
+
+    public async Task SetType2(string s)
+    {
+        Type2 = s;
         await Search(true);
     }
 
@@ -303,8 +307,8 @@
         StringBuilder s = new("?");
         if (!string.IsNullOrEmpty(Name)) s.Append($"name={Name}&");
         if (!string.IsNullOrEmpty(Category)) s.Append($"category={Category}&");
-        if (!string.IsNullOrEmpty(Type1)) s.Append($"type1={Type1}&");
-        if (!string.IsNullOrEmpty(Type2)) s.Append($"type2={Type2}&");
+        if (!string.IsNullOrEmpty(Type1) && Type1 != "Tous") s.Append($"type1={Type1}&");
+        if (!string.IsNullOrEmpty(Type2) && Type2 != "Tous") s.Append($"type2={Type2}&");
         if (!string.IsNullOrEmpty(Set)) s.Append($"set={Set}&");
 
         s.Append($"offset={Page++ * PageSize}&limit={PageSize}");

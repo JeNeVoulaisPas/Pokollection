@@ -71,10 +71,16 @@ namespace Front.Services
             return res.IsSuccessStatusCode;
         }
 
+        public string[] GetTypes()
+        {
+            return new string[] { "Tous", "Incolore", "Plante", "Eau", "Feu", "Électrique", "Métal", "Psy", "Combat", "Obscurité", "Dragon", "Fée" };
+        }
+
         public string GetTypeClass(string type)
         {
             return type switch
             {
+                "Tous" => "energy-all",
 				"Plante" => "energy-grass",
 				"Feu" => "energy-fire",
 				"Eau" => "energy-water",
