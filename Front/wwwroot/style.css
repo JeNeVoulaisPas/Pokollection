@@ -340,7 +340,7 @@ label h2 {
     height: 80%;
     overflow-x: hidden;
     overflow-y: scroll;
-    scrollbar-color: rebeccapurple green;
+    scrollbar-color: grey;
     scrollbar-width: thin;
 }
 
