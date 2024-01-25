@@ -16,7 +16,7 @@
 
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="pkmn-logo @(Category is not null ? pokémonService.GetCategoryClass(pokémonService.GetCategoryText(Category)): "")"></span>@pokémonService.GetCategoryText(Category)
+                    <span class="pkmn-logo @(pokémonService.GetCategoryClass(pokémonService.GetCategoryText(Category)))"></span>@pokémonService.GetCategoryText(Category)
                 </button>
                 <ul class="dropdown-menu">
                     @foreach (var cat in pokémonService.GetCategories())
@@ -232,9 +232,9 @@
     public List<Pokémon> pokémons = new();
 
     public string? Name { get; set; }
-    public string? Category { get; set; }
-    public string? Type1 { get; set; } = "Tous";
-    public string? Type2 { get; set; } = "Tous";
+    public string Category { get; set; } = "";
+    public string Type1 { get; set; } = "Tous";
+    public string Type2 { get; set; } = "Tous";
     public string? Set { get; set; }
 
     public async Task SetName(ChangeEventArgs e)
