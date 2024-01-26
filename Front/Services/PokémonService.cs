@@ -71,24 +71,67 @@ namespace Front.Services
             return res.IsSuccessStatusCode;
         }
 
+        public string[] GetTypes()
+        {
+            return new string[] { "Tous", "Incolore", "Plante", "Eau", "Feu", "Électrique", "Métal", "Psy", "Combat", "Obscurité", "Dragon", "Fée" };
+        }
+
         public string GetTypeClass(string type)
         {
             return type switch
             {
-				"Plante" => "energy-grass",
-				"Feu" => "energy-fire",
-				"Eau" => "energy-water",
-				"Psy" => "energy-psychic",
-				"Combat" => "energy-fighting",
-				"Obscurité" => "energy-darkness",
-				"Métal" => "energy-metal",
-				"Fée" => "energy-fairy",
-				"Dragon" => "energy-dragon",
-				"Électrique" => "energy-lightning",
-				"Incolore" => "energy-colorless",
-				_ => "energy-colorless",
-			};
-		}
+                "Tous" => "energy-all",
+                "Plante" => "energy-grass",
+                "Feu" => "energy-fire",
+                "Eau" => "energy-water",
+                "Psy" => "energy-psychic",
+                "Combat" => "energy-fighting",
+                "Obscurité" => "energy-darkness",
+                "Métal" => "energy-metal",
+                "Fée" => "energy-fairy",
+                "Dragon" => "energy-dragon",
+                "Électrique" => "energy-lightning",
+                "Incolore" => "energy-colorless",
+                _ => "energy-colorless",
+            };
+        }
+
+        // may be improved...
+        public string[] GetCategories()
+        {
+            return new string[] { "Toutes les cartes", "Cartes Pokémon", "Cartes Énergies", "Cartes Dresseurs" };
+        }
+
+        public string GetCategoryClass(string cat)
+        {
+            return cat switch
+            {
+                "Cartes Pokémon" => "pkmn-logo-pkmn",
+                "Cartes Énergies" => "pkmn-logo-energy",
+                "Cartes Dresseurs" => "pkmn-logo-trainer",
+                _ => "pkmn-logo-all",
+            };
+        }
+        public string GetCategoryValue(string cat)
+        {
+            return cat switch
+            {
+                "Cartes Pokémon" => "0",
+                "Cartes Énergies" => "1",
+                "Cartes Dresseurs" => "2",
+                _ => "",
+            };
+        }
+        public string GetCategoryText(string cat)
+        {
+            return cat switch
+            {
+                 "0" => "Cartes Pokémon",
+                "1" => "Cartes Énergies",
+                "2" => "Cartes Dresseurs",
+                _ => "Toutes les cartes",
+            };
+        }
     }
 }
 
