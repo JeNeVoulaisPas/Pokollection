@@ -8,51 +8,55 @@
 <div class="titleBanner">
     <img src="images/Collections.png" alt="Collections Image">
 </div>
+<div class="centrer">
+    <h1> Découvre les collections de tes amis !!!</h1>
+    <div class="form-vertical">
 
-<h1> Découvre les collections de tes amis !!!</h1>
+        
 
-<InputNumber @bind-Value="Code" class="form-control" placeholder="Entre un code Amis" />
-@if (Error)
-{
-	<div class="alert alert-danger" role="alert">
-		Le code Amis n'existe pas !
-	</div>
-}
+        <InputNumber @bind-Value="Code" class="form-control" placeholder="Entre un code Ami" />
+        @if (Error)
+        {
+            <div class="alert alert-danger" role="alert">
+                Le code Amis n'existe pas !
+            </div>
+        }
 
-<button type="button" class="btn btn-primary" @onclick="OnSearch">
-	<span class="bi bi-person" aria-hidden="true"></span> Chercher
-</button>
-
+        <button type="button" class="btn btn-primary" @onclick="OnSearch">
+            <span class="bi bi-person" aria-hidden="true"></span> Chercher
+        </button>
+    </div>
+</div>
 @code {
-	private int Code { get; set; }
-	private bool Error { get; set; }
+    private int Code { get; set; }
+    private bool Error { get; set; }
 
-	public void SetCode(int code)
-	{
-		Code = code;
-		Error = false;
-	}
+    public void SetCode(int code)
+    {
+        Code = code;
+        Error = false;
+    }
 
 
-	public void OnSearch()
-	{
-		NavigationManager.NavigateTo($"/friend/{Code}");
-	}
+    public void OnSearch()
+    {
+        NavigationManager.NavigateTo($"/friend/{Code}");
+    }
 
-	protected override void OnInitialized()
-	{
-		// parse query string
-		var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-		var query = QueryHelpers.ParseQuery(uri.Query);
+    protected override void OnInitialized()
+    {
+        // parse query string
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        var query = QueryHelpers.ParseQuery(uri.Query);
 
-		if (query.TryGetValue("code", out var code))
-		{
-			if (int.TryParse(code, out var c)) this.Code = c;
-		}
+        if (query.TryGetValue("code", out var code))
+        {
+            if (int.TryParse(code, out var c)) this.Code = c;
+        }
 
-		if (query.TryGetValue("type", out var type))
-		{
-			if (type == "error") Error = true;
-		}
-	}
+        if (query.TryGetValue("type", out var type))
+        {
+            if (type == "error") Error = true;
+        }
+    }
 }

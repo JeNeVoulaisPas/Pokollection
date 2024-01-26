@@ -156,21 +156,6 @@ h1 {
         margin: 0 auto;
     }
 
-/*
-.form-horizontal {
-    color: black;
-    margin-left: 0;
-    margin-right: 0;
-    background-color: white;
-    text-align: center;
-    padding: 20px;
-    border-radius: 50px;
-    max-width: 600px;
-    margin: 0 auto;
-    border-color: darkblue;
-    border-style: solid;
-    width:80%;
-}*/
 
 .form-horizontal {
     color: black;
@@ -202,6 +187,8 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    flex-direction: column;
 
 }
 
@@ -217,6 +204,7 @@ h1 {
     justify-content: center;
     align-content: center;
     width: 50%;
+    flex-direction: column;
 }
 
     .form-vertical label {
@@ -264,6 +252,7 @@ label {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 10%;
 }
 
 #validate {
@@ -285,19 +274,36 @@ label h2 {
     max-width: 100%;
 }
 
+.dropdown h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+    max-width: 100%;
+}
+
+.dropdown {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #9E1908;
+    text-align: center;
+    max-width: 100%;
+    margin : auto;
+}
+
+
 .row {
     display: flex;
     flex-wrap: wrap;
     margin: 0 -15px;
 }
 
-/*
-.col-md-3, .col-sm-6 {
-    flex: 0 0 25%;
-    max-width: 25%;
-    padding: 0 15px;
-    box-sizing: border-box;
-}*/
+.centrer h1{
+    width:100%;
+    flex:100%;
+}
 
 .SearchGrid {
     position: relative;
@@ -457,3 +463,5 @@ label h2 {
     right: 20px;
     padding: 10px 15px;
 }
+
+

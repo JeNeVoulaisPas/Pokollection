@@ -3,6 +3,8 @@
 @inject NavigationManager NavigationManager
 @inject RegisterService registerService
 @inject AuthenticationStateProvider authStateProvider
+@using System.Security.Claims
+@using Microsoft.AspNetCore.WebUtilities;
 
 <link rel="stylesheet" href="style.css" />
 
@@ -20,7 +22,7 @@
 
         @if (!string.IsNullOrEmpty(errorMessage))
         {
-            <p class="error">@errorMessage</p>
+              <div class="alert alert-danger" role="alert">@errorMessage</div>
         }
     </EditForm>
     </div>

@@ -12,11 +12,15 @@
         <div class="top-row px-4 bg-dark">
             <AuthorizeView>
                 <Authorized>
-                    <p>Salut, @context.User.Identity?.Name !</p>
-                    <a @onclick="Logout">Se Déconnecter</a>
+                    <div class="top-items">
+                        <p>Salut, @context.User.Identity?.Name !</p>
+                        <button @onclick="Logout">Se Déconnecter</button>
+                    </div>
                 </Authorized>
                 <NotAuthorized>
-                    <a @onclick="Login">Se Connecter</a>
+                    <div class="top-items">
+                        <button @onclick="Login">Se Connecter</button>
+                    </div>
                 </NotAuthorized>
             </AuthorizeView>
             

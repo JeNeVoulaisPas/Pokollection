@@ -15,6 +15,7 @@
             </label>
 
             <div class="dropdown">
+                <h2>Type de carte:</h2>
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="pkmn-logo @(pokémonService.GetCategoryClass(pokémonService.GetCategoryText(Category)))"></span>@pokémonService.GetCategoryText(Category)
                 </button>
@@ -27,6 +28,7 @@
             </div>
 
             <div class="dropdown">
+                <h2>Type 1:</h2>
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="energy @(Type1 is not null ? pokémonService.GetTypeClass(Type1): "")"></span>@Type1
                 </button>
@@ -39,6 +41,7 @@
             </div>
             
             <div class="dropdown">
+                <h2>Type 2:</h2>
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="energy @(Type2 is not null ? pokémonService.GetTypeClass(Type2): "")"></span>@Type2
                 </button>
@@ -49,7 +52,7 @@
                     }
                 </ul>
             </div>
-
+            @*
             <label>
                 <h2>Deuxième type :</h2>
                 <InputSelect class="form-control" @bind-Value="Type2" @oninput="SetType2">
@@ -189,6 +192,7 @@
                     <option value="Poing de Fusion">Poing de Fusion</option>
                 </InputSelect>
             </label>
+            *@
 
             <label>
                 <button id="validate" class="form-control" @onclick="SearchButton">Rechercher</button>

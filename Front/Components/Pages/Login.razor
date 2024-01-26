@@ -17,10 +17,10 @@
     <InputText @bind-Value="loginModel.Username" placeholder="Nom d'utilisateur" class="form-control" />
     <InputText @bind-Value="loginModel.Password" type="password" placeholder="Mot de passe" class="form-control" />
     <button id="validate" type="submit">Login</button>
-
+    <br />
     @if (!string.IsNullOrEmpty(errorMessage))
     {
-        <p class="error">@errorMessage</p>
+          <div class="alert alert-danger" role="alert">@errorMessage</div>
     }
 </EditForm>
 </div>
