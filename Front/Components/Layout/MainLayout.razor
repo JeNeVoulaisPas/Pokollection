@@ -14,12 +14,12 @@
                 <Authorized>
                     <div class="top-items">
                         <p>Salut, @context.User.Identity?.Name !</p>
-                        <button @onclick="Logout">Se Déconnecter</button>
+                        <button class="connect-button1" @onclick="Logout">Se Déconnecter</button>
                     </div>
                 </Authorized>
                 <NotAuthorized>
                     <div class="top-items">
-                        <button @onclick="Login">Se Connecter</button>
+                        <button class="connect-button2" @onclick="Login">Se Connecter</button>
                     </div>
                 </NotAuthorized>
             </AuthorizeView>

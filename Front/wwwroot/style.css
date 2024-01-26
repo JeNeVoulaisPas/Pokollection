@@ -465,3 +465,13 @@ label h2 {
 }
 
 
+.connect-button1{
+    border-radius:10px;
+    background-color:#ff9b9b;
+
+}
+
+.connect-button2 {
+    border-radius: 10px;
+    background-color: #aafa84;
+}
