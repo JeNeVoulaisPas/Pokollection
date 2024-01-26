@@ -1,4 +1,14 @@
-# MicroService
+# MicroService Web C#
+
+## Description
+
+Pokollection est un site web developpé dans le cadre d'un projet Web C#, en étude d'ingénieure.
+
+Ce site, developpé grâce au Framework Blazor et ASP.NET du C#, permet la gestion de collections de cartes Pokémon, par utilisateurs,
+et leurs partages si autorisation. La gestion des données se base sur ce qu'il se fait de mieux en matière de sécurité et de protection des données.
+
+La base de donnée des cartes Pokémon a été généré par un script Python (PokéService/Migration/pkdump.py), dumpant et filtrant celle exposé par l'API de [TCGdex](https://tcgdex.dev).
+Ce dump extrait les données (hors images) d'environ 15 000 cartes en version Française, en un peu plus d'1h.
 
 ## Guide des pages
 
@@ -32,3 +42,12 @@
 
   Cette page cous permettra de consulter la collection d'un ami ou la votre si vous n'êtes pas connecté. Elle ne donne évidemment pas la possibilité de modifié les collections affichées. La recherche est également disponible dans cette page.
 
+### Remerciement
+- [TCGdex](https://tcgdex.dev) pour toutes les données des cartes utilisées
+
+### Credit
+Romain KLODZINSKI
+Paul QUINZI
+Tous droits réservés (c) 2024
+
+### Licence MIT
