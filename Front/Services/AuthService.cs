@@ -8,9 +8,9 @@ namespace Front.Services
     /// <summary>
     /// Base class for all services that need to be authenticated (that requests JWT protected API)
     /// </summary>
-    public abstract class AuthService
+    public class AuthService
     {
-        protected readonly HttpClient _httpClient;
+        public readonly HttpClient _httpClient;
         protected readonly CustomAuthenticationStateProvider _auth;
 
         public AuthService(HttpClient httpClient,
@@ -20,20 +20,29 @@ namespace Front.Services
             _httpClient = httpClient;
             _httpClient.BaseAddress = new System.Uri("http://localhost:5000/");
             _auth = (CustomAuthenticationStateProvider)customAuthenticationStateProvider;
-            _auth.AuthenticationStateChanged += UpdateJWToken;
+            _auth.JWTokenUpdate += UpdateJWToken;
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _auth.JWToken);
         }
 
-        private void UpdateJWToken(Task<AuthenticationState> task)
+        private void UpdateJWToken()
         {
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _auth.JWToken);
         }
 
-        protected async Task<UserData?> GetUserDataAsync()
+		public async Task<UserData?> GetUserDataAsync()
+		{
+			return await _auth.GetUserDataAsync();
+		}
+		public async Task SetUserDataAsync(UserData u)
+		{
+			await _auth.SetUserDataAsync(u);
+		}
+
+        public async Task Logout()
         {
-            return await _auth.GetUserDataAsync();
-        }
-    }
+			await _auth.Logout();
+		}
+	}
 }
 
 

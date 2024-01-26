@@ -189,7 +189,6 @@ h1 {
     justify-content: center;
     text-align: center;
     flex-direction: column;
-
 }
 
 .form-vertical {
@@ -476,12 +475,14 @@ label h2 {
     background-color: #aafa84;
 }
 
-
-
+.icon-center {
+    font-size: 24px;
+    margin-right: 10px;
+    margin-left: 10px; 
+}
 
 
 /* Fake captcha from https://codepen.io/Raybe/pen/LOZdBw */
-
 .captcha {
     background-color: #f9f9f9;
     border: 2px solid #d3d3d3;

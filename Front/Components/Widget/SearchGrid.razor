@@ -9,52 +9,58 @@
     <div class="Formedex">
 
         <div class="form-horizontal">
-            <label>
-                <h2>Nom de la carte:</h2>
+            <label class="form-label">
+                <h4>Nom de la carte</h4>
                 <InputText class="form-control" @bind-Value="Name" @oninput="SetName" placeholder="Pikachu" />
             </label>
-
-            <div class="dropdown">
-                <h2>Type de carte:</h2>
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="pkmn-logo @(pokémonService.GetCategoryClass(pokémonService.GetCategoryText(Category)))"></span>@pokémonService.GetCategoryText(Category)
-                </button>
-                <ul class="dropdown-menu">
-                    @foreach (var cat in pokémonService.GetCategories())
-                    {
-                        <li><button class="dropdown-item" @onclick="async () => await SetCategory(pokémonService.GetCategoryValue(cat))"><span class="pkmn-logo @pokémonService.GetCategoryClass(cat)"></span>@cat</button></li>
-                    }
-                </ul>
-            </div>
-
-            <div class="dropdown">
-                <h2>Type 1:</h2>
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="energy @(Type1 is not null ? pokémonService.GetTypeClass(Type1): "")"></span>@Type1
-                </button>
-                <ul class="dropdown-menu">
-                    @foreach (var type in pokémonService.GetTypes())
-                    {
-                        <li><button class="dropdown-item" @onclick="async () => await SetType1(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
-                    }
-                </ul>
-            </div>
             
-            <div class="dropdown">
-                <h2>Type 2:</h2>
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="energy @(Type2 is not null ? pokémonService.GetTypeClass(Type2): "")"></span>@Type2
-                </button>
-                <ul class="dropdown-menu">
-                    @foreach (var type in pokémonService.GetTypes())
-                    {
-                        <li><button class="dropdown-item" @onclick="async () => await SetType2(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
-                    }
-                </ul>
-            </div>
+            <label class="form-label">
+                <h4>Type de carte</h4>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="pkmn-logo @(pokémonService.GetCategoryClass(pokémonService.GetCategoryText(Category)))"></span>@pokémonService.GetCategoryText(Category)
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var cat in pokémonService.GetCategories())
+                        {
+                            <li><button class="dropdown-item" @onclick="async () => await SetCategory(pokémonService.GetCategoryValue(cat))"><span class="pkmn-logo @pokémonService.GetCategoryClass(cat)"></span>@cat</button></li>
+                        }
+                    </ul>
+                </div>
+            </label>
+            
+            <label class="form-label">
+                <h4>Type 1</h4>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="energy @(Type1 is not null ? pokémonService.GetTypeClass(Type1): "")"></span>@Type1
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var type in pokémonService.GetTypes())
+                        {
+                            <li><button class="dropdown-item" @onclick="async () => await SetType1(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
+                        }
+                    </ul>
+                </div>
+            </label>
+            
+            <label class="form-label">
+                <h4>Type 2</h4>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="energy @(Type2 is not null ? pokémonService.GetTypeClass(Type2): "")"></span>@Type2
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var type in pokémonService.GetTypes())
+                        {
+                            <li><button class="dropdown-item" @onclick="async () => await SetType2(type)"><span class="energy @pokémonService.GetTypeClass(type)"></span>@type</button></li>
+                        }
+                    </ul>
+                </div>
+            </label>
 
-            <label>
-                Set de carte:
+            <label class="form-label">
+                <h4>Set</h4>
                 <input class="form-control" list="datalistOptions" @oninput="SetSet" placeholder="Set de cartes...">
                 <datalist id="datalistOptions">
 
@@ -178,6 +184,7 @@
             </label>
 
             <label>
+                <h4> </h4>
                 <button id="validate" class="form-control" @onclick="SearchButton">Rechercher</button>
             </label>
         </div>
@@ -288,7 +295,6 @@
 
     public async Task Search(bool reset = false)
     {
-        Console.WriteLine("SearchClear");
         var h = Name?.GetHashCode() + Category?.GetHashCode() + Type1?.GetHashCode() + Type2?.GetHashCode() + Set?.GetHashCode();
         bool clear = reset || h != lastHash;
 
@@ -330,18 +336,15 @@
 
                     if (same) return;
                 }
-                Console.WriteLine("Clear");
                 pokémons.Clear();
             }
 
-            Console.WriteLine("Add");
             pokémons.AddRange(pk);
         }
     }
 
     public async Task OnDelete(Pokémon pokémon)
     {
-        Console.WriteLine("Delete");
         pokémons.Remove(pokémon);
         StateHasChanged();
     }

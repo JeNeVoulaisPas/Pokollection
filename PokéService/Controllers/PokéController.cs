@@ -52,8 +52,8 @@ namespace PokéService.Controllers
         }
 
 
-        // POST: api/Poké/collection/5
-        [HttpPost("collection/public/{id}")]
+        // POST: api/Poké/collection/5/True
+        [HttpPost("collection/public/{id}/{isPublic}")]
         public async Task<ActionResult> SetProtection(int id, bool isPublic) // set collection protection
         {
             var c = await _context.CardsCollection.FindAsync(id);
@@ -61,6 +61,10 @@ namespace PokéService.Controllers
             if (c is null) return NotFound("collection not found");
 
             c.IsPublic = isPublic;
+
+            _context.Entry(c).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
 
             return Ok();
         }

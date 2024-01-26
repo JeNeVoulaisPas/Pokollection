@@ -3,7 +3,7 @@
 <div class="captcha">
 	<div class="captcha-spinner">
 		<label>
-			<input type="checkbox" onclick="$(this).attr('disabled','disabled');">
+			<input type="checkbox" @onclick="OnClick" disabled="@disabled">
 			<span class="checkmark"><span>&nbsp;</span></span>
 		</label>
 	</div>
@@ -19,5 +19,14 @@
 
 
 @code {
-	[Parameter] public Action<bool>? Check { get; set; }
+	[Parameter] public Action? Check { get; set; }
+
+	private bool disabled = false;
+
+	public async void OnClick()
+	{
+		disabled = true;
+		await Task.Delay(1500);
+		Check?.Invoke();
+	}
 }

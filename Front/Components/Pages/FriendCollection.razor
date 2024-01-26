@@ -1,10 +1,11 @@
-﻿@page "/friend/{username}"
+﻿@page "/friend"
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authStateProvider
 @inject PokémonService pokémonService
 @using System.Security.Claims;
 @using Front.Entities;
 @using Front.Components.Widget;
+@using Microsoft.AspNetCore.WebUtilities
 
 
 @if (username != null)
@@ -23,30 +24,61 @@ else
 	<div class="titleBanner">
 		<img src="images/Collections.png" alt="Collections Image">
 	</div>
+	
+<div class="centrer">
+	<div class="form-vertical">
+		<h2> Découvre les collections de tes amis !</h2>
 
-	<h1> Découvre les collections de tes amis !!!</h1>
+		<p><br /></p>
 
-	<InputText @bind-Value="Pseudo" class="form-control" placeholder="Entre le pseudo de tes Amis" />
-	@if (Error)
-	{
-		<div class="alert alert-danger" role="alert">
-			Le code Amis n'existe pas !
-		</div>
-	}
+		<label class="form-label">
+			Entre leurs pseudo
+			<input @bind-value="Pseudo" class="form-control @(Error ? "is-invalid": "")" placeholder="TheRed" />
+			@if (Error)
+			{
+				<p class="invalid-feedback">Pseudo non trouvé</p>
+			}
+		</label>
 
-	<button type="button" class="btn btn-primary" @onclick="OnSearch">
-		<span class="bi bi-person" aria-hidden="true"></span> Chercher
-	</button>
+		<button type="button" class="btn btn-primary" @onclick="OnSearch">
+			<span class="bi bi-person" aria-hidden="true"></span> Chercher
+		</button>
+	</div>
+</div>
 }
 
 
+
 @code {
-	[Parameter] public string? username { get; set; }
+	public string? username { get; set; }
 
 	private string Pseudo { get; set; } = "";
 
 	private bool Error { get; set; }
 
+	protected override async Task OnInitializedAsync()
+	{
+		var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+		var query = QueryHelpers.ParseQuery(uri.Query);
+		if (query.TryGetValue("username", out var username))
+		{
+			string? un = username;
+			if (un != null)
+			{
+				if (await pokémonService.IsExists(un))
+				{
+					this.username = un;
+					return;
+				}
+				else
+				{
+					Pseudo = un;
+					Error = true;
+				}
+			}
+		}
+	
+	}
 
 	public async Task OnSearch()
 	{
@@ -54,7 +86,6 @@ else
 		if (await pokémonService.IsExists(Pseudo)) username = Pseudo;
 		else Error = true;
 	}
-
 
     public async Task<IEnumerable<Pokémon>?> Searcher(string query)
     {

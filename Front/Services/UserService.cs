@@ -10,15 +10,18 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Front.Services
 {
-    public class UserService: AuthService
-    {
-        public UserService(HttpClient httpClient, AuthenticationStateProvider customAuthenticationStateProvider) : base(httpClient, customAuthenticationStateProvider) {
-        }
+    public class UserService
+	{
+		private readonly AuthService auth;
+		public UserService(AuthService auth)
+		{
+			this.auth = auth;
+		}
 
-        // Login
-        public async Task<UserDTO?> AuthenticateUser(UserLogin login)
+		// Login
+		public async Task<UserDTO?> AuthenticateUser(UserLogin login)
         {
-            var res = await _httpClient.PostAsJsonAsync<UserLogin>("api/User/login", login);
+            var res = await auth._httpClient.PostAsJsonAsync("api/User/login", login);
             if (res.IsSuccessStatusCode)
             {
                 try
@@ -36,29 +39,58 @@ namespace Front.Services
         }
 
         // Delete
+
         public async Task<bool> DeleteAccount()
-        {
-            var res = await _httpClient.DeleteAsync($"api/User");
-            if (res.IsSuccessStatusCode) await Logout();
+		{
+			var res = await auth._httpClient.DeleteAsync($"api/User");
+
+			if (res.IsSuccessStatusCode) await Logout();
+            
             return res.IsSuccessStatusCode;
         }
 
         public async Task Logout()
         {
-            await _auth.Logout();
+            await auth.Logout();
         }
 
         // Register
 
         public async Task<string?> CreateUser(UserCreate uc)
         {
-            var res = await _httpClient.PostAsJsonAsync<UserCreate>("api/User/register", uc);
+            var res = await auth._httpClient.PostAsJsonAsync("api/User/register", uc);
 
-            return res.IsSuccessStatusCode? null: await res.Content.ReadAsStringAsync();
-
+            return res.IsSuccessStatusCode ? null : await res.Content.ReadAsStringAsync();
         }
 
-        public string GetGender(Gender g)
+        // Update
+
+        public async Task<string?> UpdateUser(UserData ud)
+        {
+            var res = await auth._httpClient.PutAsJsonAsync("api/User", ud);
+
+            if (res.IsSuccessStatusCode) await auth.SetUserDataAsync(ud);
+
+            return res.IsSuccessStatusCode ? null : await res.Content.ReadAsStringAsync();
+        }
+
+        // Change Password
+
+        public async Task<string?> ChangePassword(UserPasswordChange up)
+        {
+            var res = await auth._httpClient.PutAsJsonAsync("api/User/pass", up);
+
+            return res.IsSuccessStatusCode ? null : await res.Content.ReadAsStringAsync();
+        }
+
+		// Data Representation
+
+        public async Task<UserData?> GetUserDataAsync()
+        {
+			return await auth.GetUserDataAsync();
+		}
+
+		public string GetGender(Gender g)
         {
             return g switch
             {

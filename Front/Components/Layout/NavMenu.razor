@@ -10,36 +10,36 @@
     <nav class="flex-column">
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="friend" Match="NavLinkMatch.All">
-                <span class="bi bi-collection-play" aria-hidden="true"></span> Collections
+                <span class="bi-people icon-center" aria-hidden="true"></span> Amis
             </NavLink>
         </div>
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="search" Match="NavLinkMatch.All">
-                <span class="bi bi-search" aria-hidden="true"></span> Rechercher
+                <span class="bi-search icon-center" aria-hidden="true"></span> Rechercher
             </NavLink>
         </div>
         <AuthorizeView Roles="User">
             <Authorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="collect" Match="NavLinkMatch.All">
-                        <span class="bi bi-search" aria-hidden="true"></span> Collection
+                        <span class="bi-book icon-center" aria-hidden="true"></span> Collection
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="account" Match="NavLinkMatch.All">
-                        <span class="bi bi-person-fill" aria-hidden="true"></span> Compte
+                        <span class="bi-person icon-center" aria-hidden="true"></span> Compte
                     </NavLink>
                 </div>
             </Authorized>
             <NotAuthorized>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="login" Match="NavLinkMatch.All">
-                        <span class="bi bi-box-arrow-in-right" aria-hidden="true"></span> Se connecter
+                        <span class="bi-box-arrow-in-right icon-center" aria-hidden="true"></span> Se connecter
                     </NavLink>
                 </div>
                 <div class="nav-item px-3">
                     <NavLink class="nav-link" href="register" Match="NavLinkMatch.All">
-                        <span class="bi bi-house-door-fill" aria-hidden="true"></span> S'inscrire
+                        <span class="bi-pen icon-center" aria-hidden="true"></span> S'inscrire
                     </NavLink>
                 </div>
             </NotAuthorized>

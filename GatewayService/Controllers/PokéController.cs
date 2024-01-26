@@ -49,8 +49,8 @@ namespace GatewayService.Controllers
 
         // POST: api/Poké/collection/public
         [Authorize]
-        [HttpPost("collection/public")]
-        public async Task<ActionResult<string[]>> SetProtection(bool isPublic) // set collection protection
+        [HttpPost("collection/public/{isPublic}")]
+        public async Task<ActionResult> SetProtection(bool isPublic) // set collection protection
         {
             var id = GetLoggedId();
             if (id is null) return Unauthorized();
@@ -60,7 +60,7 @@ namespace GatewayService.Controllers
             {
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-                HttpResponseMessage response = await client.PostAsJsonAsync($"api/Poké/collection/public/{id}", isPublic);
+				HttpResponseMessage response = await client.PostAsync($"api/Poké/collection/public/{id}/{isPublic}", null);
 
                 // Check if the response status code is 200 (OK)
                 if (response.IsSuccessStatusCode) return Ok();
@@ -115,19 +115,19 @@ namespace GatewayService.Controllers
             {
                 client.BaseAddress = new System.Uri("http://localhost:5001/");
 
-                HttpResponseMessage response = await client.GetAsync($"api/Users/name/{name}");
+                HttpResponseMessage response = await client.GetAsync($"api/Users/name/{uname}");
 
                 // Check if the response status code is 200 (OK)
                 if (response.IsSuccessStatusCode) uid = await response.Content.ReadFromJsonAsync<int>();
                 else return NotFound();
             }
-			
-            using (var client = _httpClientFactory.CreateClient()) // check if the collection is public
+
+			using (var client = _httpClientFactory.CreateClient()) // check if the collection is public
 			{
 				client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-				HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/public/{id}");
-
+				HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/public/{uid}");
+                ;
 				if (!response.IsSuccessStatusCode || !(await response.Content.ReadFromJsonAsync<bool>())) return NotFound();
 			}
 
@@ -153,8 +153,8 @@ namespace GatewayService.Controllers
 
                 HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/{uid}/card?{query}");
 
-                // Check if the response status code is 200 (OK)
-                if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
+				// Check if the response status code is 200 (OK)
+				if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
                 else return NotFound(await response.Content.ReadAsStringAsync());
                 // avoid deserialize+reserialize ?? -> return Content(await apiResponse.Content.ReadAsStringAsync(), apiResponse.Content.Headers.ContentType.MediaType);
             }
@@ -329,10 +329,10 @@ namespace GatewayService.Controllers
         }
 
         private int? GetLoggedId()
-        {
-            var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            if (UserId == null || !int.TryParse(UserId, out int id)) return null;
-            return id;
-        }
-    }
+        { 
+			var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+			if (UserId == null || !int.TryParse(UserId, out int id)) return null;
+			return id;
+		}
+	}
 }

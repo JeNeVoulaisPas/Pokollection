@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Claims;
 using System.Security.Principal;
+using static Front.Services.CustomAuthenticationStateProvider;
 
 namespace Front.Services
 {
@@ -14,14 +15,19 @@ namespace Front.Services
         
         public string? JWToken { get; private set; } = null;
 
+		public event Action JWTokenUpdate;
+
         public CustomAuthenticationStateProvider(ProtectedLocalStorage protectedSessionStorage)
         {
             _sessionStorage = protectedSessionStorage;
-        }
+			JWTokenUpdate += () => Console.WriteLine("JWTokenUpdate triggered");
+		}
+
 
         public async Task<ClaimsPrincipal> MarkUserAsAuthenticated(UserDTO user)
         {
             JWToken = user.Token;
+            JWTokenUpdate?.Invoke();
             await _sessionStorage.SetAsync("User", user);
             var claims = new[] {
                 new Claim(ClaimTypes.Name, user.Data.Username),
@@ -33,25 +39,25 @@ namespace Front.Services
             NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 
             return _currentUser;
-        }
-        public async Task<ClaimsPrincipal> Logout()
-        {
-            JWToken = null;
-            await _sessionStorage.DeleteAsync("User");
-            _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+		}
+		public async Task<ClaimsPrincipal> Logout()
+		{
+			JWToken = null;
+			JWTokenUpdate?.Invoke();
+			await _sessionStorage.DeleteAsync("User");
+			_currentUser = new ClaimsPrincipal(new ClaimsIdentity());
 
-            NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-            return _currentUser;
-        }
+			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
+			return _currentUser;
+		}
 
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            ProtectedBrowserStorageResult<UserDTO>? userSession = null;
+		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+		{
+			ProtectedBrowserStorageResult<UserDTO>? userSession = null;
 
             try
             {
                 userSession = await _sessionStorage.GetAsync<UserDTO>("User");
-
             }
             catch
             {
@@ -62,14 +68,16 @@ namespace Front.Services
             {
                 var user = userSession.Value.Value;
                 JWToken = user.Token; // update token
-                var claims = new[] {
+				JWTokenUpdate?.Invoke();
+				var claims = new[] {
                     new Claim(ClaimTypes.Name, user.Data.Username),
                     new Claim(ClaimTypes.Role, "User")
                 };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 _currentUser = new ClaimsPrincipal(identity);
-            } else {
-                _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
+			} else
+			{
+				_currentUser = new ClaimsPrincipal(new ClaimsIdentity());
             }
             return await Task.FromResult(new AuthenticationState(_currentUser));
         }

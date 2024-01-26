@@ -186,8 +186,8 @@ namespace GatewayService.Controllers
         [Authorize]
         [HttpDelete("")]
         public async Task<IActionResult> Delete()
-        {
-            var id = GetLoggedId();
+		{
+			var id = GetLoggedId();
             if (id is null) return Unauthorized();
 
             using (var client = _httpClientFactory.CreateClient())
@@ -241,7 +241,7 @@ namespace GatewayService.Controllers
         {
             var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
             if (UserId == null || !int.TryParse(UserId, out int id)) return null;
-            return id;
+			return id;
         }
     }
 }

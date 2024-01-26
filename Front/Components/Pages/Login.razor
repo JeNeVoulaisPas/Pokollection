@@ -32,10 +32,15 @@
             </label>
 
 
-            <Captcha></Captcha>
+            <p><br /></p>
 
-            <button class="btn btn-success" type="submit" disabled="@(String.IsNullOrEmpty(userLogin.UsernameOrEmail) || String.IsNullOrEmpty(userLogin.Pass))">Se connecter</button>
-            <button class="btn btn-primary" @onclick="@(() => NavigationManager.NavigateTo("/register"))">S'inscrire</button>
+            <Captcha Check="CCheck"></Captcha>
+
+            <p><br /></p>
+
+            <button class="btn @(Valid ? "btn-success": "btn-outline-success")" type="submit" disabled="@(!Valid)">Se connecter</button>
+
+            <p class="text-center"><br />Pas encore de compte ? <a href="/register">En créer un ici !</a></p>
 
         </EditForm>
     </div>
@@ -44,6 +49,15 @@
 @code {
     private UserLogin userLogin = new UserLogin() { UsernameOrEmail = "", Pass = "" };
     private string errorMessage = "";
+    private bool CChecked = false;
+
+    public bool Valid
+	{
+		get
+		{
+            return !String.IsNullOrEmpty(userLogin.UsernameOrEmail) && !String.IsNullOrEmpty(userLogin.Pass) && CChecked;
+		}
+	}
 
     private async void HandleLogin()
     {
@@ -55,6 +69,12 @@
             NavigationManager.NavigateTo("/");
         }
         else errorMessage = "Echec de la connexion, veuillez verifier vos identifiants.";
+        StateHasChanged();
+    }
+
+    public void CCheck()
+    {
+        CChecked = true;
         StateHasChanged();
     }
 }
