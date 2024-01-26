@@ -125,3 +125,20 @@ h1:focus {
     color: #e50000;
     margin-top: 2%;
 }
+
+.top-items{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-items p{
+    margin-bottom:0;
+    width:100%;
+}
+
+
+.top-items button{
+    margin: 2%;
+}

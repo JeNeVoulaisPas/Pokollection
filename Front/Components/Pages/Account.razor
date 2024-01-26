@@ -15,6 +15,9 @@
         </div>
 
         <button class="btn btn-primary" @onclick="HandleSuppression">Supprimer le compte</button>
+
+        @*<h2>Mon ID:@(await (CustomAuthenticationStateProvider)authStateProvider.GetAuthenticationIdAsync())</h2>*@
+
     </Authorized>
     <NotAuthorized>
         Not Logged in
@@ -22,6 +25,8 @@
 </AuthorizeView>
 
 @code {
+
+
     private async Task HandleSuppression()
     {
         // Appeler la méthode DeleteAccount en passant l'ID de l'utilisateur
