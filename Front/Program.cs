@@ -24,11 +24,9 @@ builder.Services.AddAuthenticationCore();
 builder.Services.AddHttpClient();
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<ProtectedLocalStorage>();
-builder.Services.AddScoped<LoginService>();
-builder.Services.AddScoped<RegisterService>();
 builder.Services.AddScoped<PokémonService>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-builder.Services.AddScoped<DeleteService>();
 
 
 var app = builder.Build();

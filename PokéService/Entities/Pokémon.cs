@@ -19,6 +19,8 @@ namespace PokéService.Entities
         [Key]
         public required int Id { get; set; }
 
+        public required bool IsPublic { get; set; } = false;
+
         public virtual string? Cards { get; set; }  // Ids of the cards joined by \n
 
         [NotMapped]

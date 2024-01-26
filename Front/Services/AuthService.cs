@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using Front.Entities;
+using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 
 
@@ -10,25 +11,27 @@ namespace Front.Services
     public abstract class AuthService
     {
         protected readonly HttpClient _httpClient;
-        protected CustomAuthenticationStateProvider? _auth;
+        protected readonly CustomAuthenticationStateProvider _auth;
 
-        public AuthService(HttpClient httpClient)
+        public AuthService(HttpClient httpClient,
+                           AuthenticationStateProvider customAuthenticationStateProvider
+            )
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new System.Uri("http://localhost:5000/");
-            _auth = null;
-        }
-
-        public void SetAuthenticator(CustomAuthenticationStateProvider auth) { // set auth when null
-            if (_auth != null) return;
-            _auth = auth;
-            auth.AuthenticationStateChanged += UpdateJWToken;
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", auth.JWToken);
+            _auth = (CustomAuthenticationStateProvider)customAuthenticationStateProvider;
+            _auth.AuthenticationStateChanged += UpdateJWToken;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _auth.JWToken);
         }
 
         private void UpdateJWToken(Task<AuthenticationState> task)
         {
-            if (_auth != null) _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _auth.JWToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _auth.JWToken);
+        }
+
+        protected async Task<UserData?> GetUserDataAsync()
+        {
+            return await _auth.GetUserDataAsync();
         }
     }
 }

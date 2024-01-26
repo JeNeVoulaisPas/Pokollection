@@ -5,7 +5,7 @@
 @using System.Security.Claims;
 @using System.Text;
 @using Front.Components.Widget
-@using PokéService.Entities;
+@using Front.Entities;
 
 
 <link rel="stylesheet" href="style.css" />
@@ -21,7 +21,6 @@
 
 @code {
 	public async Task<IEnumerable<Pokémon>?> Searcher(string query) {
-		pokémonService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider); // ensure manual injection of authStateProvider
 		return await pokémonService.Search(query);
 	}
 }

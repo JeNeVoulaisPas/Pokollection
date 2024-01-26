@@ -24,7 +24,7 @@ namespace Front.Services
             JWToken = user.Token;
             await _sessionStorage.SetAsync("User", user);
             var claims = new[] {
-                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Name, user.Data.Username),
                 new Claim(ClaimTypes.Role, "User")
             };
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -46,13 +46,24 @@ namespace Front.Services
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var userSession = await _sessionStorage.GetAsync<UserDTO>("User");
-            if (userSession.Success && userSession.Value != null)
+            ProtectedBrowserStorageResult<UserDTO>? userSession = null;
+
+            try
             {
-                var user = userSession.Value;
+                userSession = await _sessionStorage.GetAsync<UserDTO>("User");
+
+            }
+            catch
+            {
+                Console.WriteLine("Error while getting user session");
+            }
+
+            if (userSession is not null && userSession.Value.Success && userSession.Value.Value != null)
+            {
+                var user = userSession.Value.Value;
                 JWToken = user.Token; // update token
                 var claims = new[] {
-                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Name, user.Data.Username),
                     new Claim(ClaimTypes.Role, "User")
                 };
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -63,19 +74,21 @@ namespace Front.Services
             return await Task.FromResult(new AuthenticationState(_currentUser));
         }
 
-        public async Task<int?> GetAuthenticationIdAsync()
+        public async Task<UserData?> GetUserDataAsync()
+        {
+            var userSession = await _sessionStorage.GetAsync<UserDTO>("User");
+            if (userSession.Success && userSession.Value != null) return userSession.Value.Data;
+            return null;
+        }
+
+        public async Task SetUserDataAsync(UserData ud)
         {
             var userSession = await _sessionStorage.GetAsync<UserDTO>("User");
             if (userSession.Success && userSession.Value != null)
             {
-                var user = userSession.Value.Id;
-                return user;
+                userSession.Value.Data = ud;
+                await MarkUserAsAuthenticated(userSession.Value);
             }
-            else
-            {
-                _currentUser = new ClaimsPrincipal(new ClaimsIdentity());
-            }
-            return null;
         }
     }
 }

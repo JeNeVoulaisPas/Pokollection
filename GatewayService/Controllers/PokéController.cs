@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PokéService.Entities;
 using System.Net;
+using System.Text;
 
 namespace GatewayService.Controllers
 {
@@ -21,10 +23,60 @@ namespace GatewayService.Controllers
 
         // Collection: api/Poké/collection
 
-        // GET: api/Poké/collection/5
-        [HttpGet("collection/{id}")]
-        public async Task<ActionResult<string[]>> GetCollection(int id) // get all cards ids
+
+
+        // GET: api/Poké/collection/public
+        [Authorize]
+        [HttpGet("collection/public")]
+        public async Task<ActionResult<bool>> IsPublic() // is collection public
         {
+            var id = GetLoggedId();
+            if (id is null) return Unauthorized();
+
+            // Create an HttpClient instance using the factory
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                client.BaseAddress = new System.Uri("http://localhost:5002/");
+
+                HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/public/{id}");
+
+                // Check if the response status code is 200 (OK)
+                if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<bool>());
+                else return NotFound(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+
+        // POST: api/Poké/collection/public
+        [Authorize]
+        [HttpPost("collection/public")]
+        public async Task<ActionResult<string[]>> SetProtection(bool isPublic) // set collection protection
+        {
+            var id = GetLoggedId();
+            if (id is null) return Unauthorized();
+
+            // Create an HttpClient instance using the factory
+            using (var client = _httpClientFactory.CreateClient())
+            {
+                client.BaseAddress = new System.Uri("http://localhost:5002/");
+
+                HttpResponseMessage response = await client.PostAsJsonAsync($"api/Poké/collection/public/{id}", isPublic);
+
+                // Check if the response status code is 200 (OK)
+                if (response.IsSuccessStatusCode) return Ok();
+                else return NotFound(await response.Content.ReadAsStringAsync());
+            }
+        }
+
+
+        // GET: api/Poké/collection
+        [Authorize]
+        [HttpGet("collection")]
+        public async Task<ActionResult<string[]>> GetCollection() // get all cards ids
+        {
+            var id = GetLoggedId();
+            if (id is null) return Unauthorized();
+
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
             {
@@ -39,9 +91,10 @@ namespace GatewayService.Controllers
         }
 
 
-        // GET: api/Poké/collection/5/card?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
-        [HttpGet("collection/{id}/card")]
-        public async Task<ActionResult<IEnumerable<Pokémon>>> GetPokémonCollection(int id, // get all cards data
+        // GET: api/Poké/collection/from/uname?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
+        [HttpGet("collection/from/{uname}")]
+        public async Task<ActionResult<IEnumerable<Pokémon>>> GetPokémonCollectionFrom( // get cards data from a user pseudo
+            string uname,
             string? name = null,
             string? set = null,
             Categories? category = null,
@@ -53,14 +106,52 @@ namespace GatewayService.Controllers
             int limit = 50,
             int offset = 0)
         {
-            // Create an HttpClient instance using the factory
+            var id = GetLoggedId();
+            int uid = 0;
+
+
+            /// Get user id from pseudo
             using (var client = _httpClientFactory.CreateClient())
             {
-                var arg = this.HttpContext.Request.QueryString;
+                client.BaseAddress = new System.Uri("http://localhost:5001/");
+
+                HttpResponseMessage response = await client.GetAsync($"api/Users/name/{name}");
+
+                // Check if the response status code is 200 (OK)
+                if (response.IsSuccessStatusCode) uid = await response.Content.ReadFromJsonAsync<int>();
+                else return NotFound();
+            }
+			
+            using (var client = _httpClientFactory.CreateClient()) // check if the collection is public
+			{
+				client.BaseAddress = new System.Uri("http://localhost:5002/");
+
+				HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/public/{id}");
+
+				if (!response.IsSuccessStatusCode || !(await response.Content.ReadFromJsonAsync<bool>())) return NotFound();
+			}
+
+			using (var client = _httpClientFactory.CreateClient())
+            {
+                client.BaseAddress = new System.Uri("http://localhost:5002/");
+
+                // Generate query string in a stringbuilder
+                StringBuilder query = new StringBuilder();
+                if (!String.IsNullOrEmpty(name)) query.Append($"name={name}&");
+                if (!String.IsNullOrEmpty(set)) query.Append($"set={set}&");
+                if (category is not null) query.Append($"category={category}&");
+                if (!String.IsNullOrEmpty(lid)) query.Append($"lid={lid}&");
+                if (!String.IsNullOrEmpty(type1)) query.Append($"type1={type1}&");
+                if (!String.IsNullOrEmpty(type2)) query.Append($"type2={type2}&");
+                if (!String.IsNullOrEmpty(illustrator)) query.Append($"illustrator={illustrator}&");
+                if (hp is not null) query.Append($"hp={hp}&");
+                query.Append($"limit={limit}&");
+                query.Append($"offset={offset}&");
+                if (id is not null) query.Append($"id={id}&");
 
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-                HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/{id}/card{arg}"); // fast forward query arguments
+                HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/{uid}/card?{query}");
 
                 // Check if the response status code is 200 (OK)
                 if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
@@ -70,50 +161,52 @@ namespace GatewayService.Controllers
         }
 
 
-        // POST: api/Poké/collection -> /!\ MERGED WITH USER/REGISTER
-        /*
+        // GET: api/Poké/collection/card?name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
         [Authorize]
-        [HttpPost("collection")]
-        public async Task<IActionResult> CreateCollection() // create collection
+        [HttpGet("collection/card")]
+        public async Task<ActionResult<IEnumerable<Pokémon>>> GetPokémonCollection( // get cards data
+            string? name = null,
+            string? set = null,
+            Categories? category = null,
+            string? lid = null,
+            string? type1 = null,
+            string? type2 = null,
+            string? illustrator = null,
+            int? hp = null,
+            int limit = 50,
+            int offset = 0)
         {
-            var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            if (UserId == null || !int.TryParse(UserId, out int id)) return Unauthorized();
+            var id = GetLoggedId();
+            if (id is null) return Unauthorized();
 
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
             {
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-                HttpResponseMessage response = await client.PostAsync($"api/Poké/collection/{id}", null);
+                // generate query string in a stringbuilder
+                StringBuilder query = new StringBuilder();
+                if (!String.IsNullOrEmpty(name)) query.Append($"name={name}&");
+                if (!String.IsNullOrEmpty(set)) query.Append($"set={set}&");
+                if (category is not null) query.Append($"category={category}&");
+                if (!String.IsNullOrEmpty(lid)) query.Append($"lid={lid}&");
+                if (!String.IsNullOrEmpty(type1)) query.Append($"type1={type1}&");
+                if (!String.IsNullOrEmpty(type2)) query.Append($"type2={type2}&");
+                if (!String.IsNullOrEmpty(illustrator)) query.Append($"illustrator={illustrator}&");
+                if (hp is not null) query.Append($"hp={hp}&");
+                query.Append($"limit={limit}&");
+                query.Append($"offset={offset}&");
 
-                if (response.StatusCode == HttpStatusCode.OK) return Ok(); // Already exists
-                if (response.StatusCode == HttpStatusCode.Created) return Created(); // collection created
-                return NotFound(); // unexpected failure
-            }
-        }*/
-
-
-        // DELETE: api/Poké/collection
-        /*
-        [Authorize]
-        [HttpDelete("collection")]
-        public async Task<IActionResult> DeleteCollection() // delete collection
-        {
-            var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            if (UserId == null || !int.TryParse(UserId, out int id)) return Unauthorized();
-
-            // Create an HttpClient instance using the factory
-            using (var client = _httpClientFactory.CreateClient())
-            {
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-                HttpResponseMessage response = await client.DeleteAsync($"api/Poké/collection/{id}");
+                HttpResponseMessage response = await client.GetAsync($"api/Poké/collection/{id}/card?{query}"); // fast forward query arguments
 
                 // Check if the response status code is 200 (OK)
-                if (response.IsSuccessStatusCode) return Ok();
+                if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
                 else return NotFound(await response.Content.ReadAsStringAsync());
+                // avoid deserialize+reserialize ?? -> return Content(await apiResponse.Content.ReadAsStringAsync(), apiResponse.Content.Headers.ContentType.MediaType);
             }
-        }*/
+        }
 
 
         // POST: api/Poké/collection/card/1
@@ -121,8 +214,8 @@ namespace GatewayService.Controllers
         [HttpPost("collection/card/{cid}")]
         public async Task<IActionResult> AddCard(string cid) // add card to collection
         {
-            var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            if (UserId == null || !int.TryParse(UserId, out int id)) return Unauthorized();
+            var id = GetLoggedId();
+            if (id is null) return Unauthorized();
 
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
@@ -143,8 +236,8 @@ namespace GatewayService.Controllers
         [HttpDelete("collection/card/{cid}")]
         public async Task<IActionResult> DeleteCard(string cid) // delete card from collection
         {
-            var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-            if (UserId == null || !int.TryParse(UserId, out int id)) return Unauthorized();
+            var id = GetLoggedId();
+            if (id is null) return Unauthorized();
 
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
@@ -166,8 +259,10 @@ namespace GatewayService.Controllers
 
 		// GET: api/Poké/card/5?id=
 		[HttpGet("card/{cid}")]
-		public async Task<ActionResult<Pokémon>> GetCard(string cid, int? id = null)  // user id to attach the "possessed" property, ignore
+		public async Task<ActionResult<Pokémon>> GetCard(string cid)
         {
+            var id = GetLoggedId();
+
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
             {
@@ -185,10 +280,10 @@ namespace GatewayService.Controllers
             }
         }
 
+
         // GET: api/Poké/search?id=&name=&set=&category=&lid=&type1=&type2=&hp=&illustrator=&limit=&offset=
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<Pokémon>>> SearchCard(
-			int? id = null, // user id to attach the "possessed" property, ignored if invalid
 			string? name = null,
             string? set = null,
             Categories? category = null,
@@ -200,6 +295,8 @@ namespace GatewayService.Controllers
             int limit = 50,
             int offset = 0)
         {
+            var id = GetLoggedId();
+
             // Create an HttpClient instance using the factory
             using (var client = _httpClientFactory.CreateClient())
             {
@@ -207,14 +304,35 @@ namespace GatewayService.Controllers
 
                 client.BaseAddress = new System.Uri("http://localhost:5002/");
 
-                HttpResponseMessage response = await client.GetAsync(
-                    $"api/Poké/search{arg}"); // fast forward query arguments
+                // generate query string in a stringbuilder
+                StringBuilder query = new StringBuilder();
+                if (!String.IsNullOrEmpty(name)) query.Append($"name={name}&");
+                if (!String.IsNullOrEmpty(set)) query.Append($"set={set}&");
+                if (category is not null) query.Append($"category={category}&");
+                if (!String.IsNullOrEmpty(lid)) query.Append($"lid={lid}&");
+                if (!String.IsNullOrEmpty(type1)) query.Append($"type1={type1}&");
+                if (!String.IsNullOrEmpty(type2)) query.Append($"type2={type2}&");
+                if (!String.IsNullOrEmpty(illustrator)) query.Append($"illustrator={illustrator}&");
+                if (hp is not null) query.Append($"hp={hp}&");
+                query.Append($"limit={limit}&");
+                query.Append($"offset={offset}&");
+                if (id is not null) query.Append($"id={id}&");
+
+
+                HttpResponseMessage response = await client.GetAsync($"api/Poké/search?{query.ToString()}");
 
                 // Check if the response status code is 200 (OK)
                 if (response.IsSuccessStatusCode) return Ok(await response.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>());
                 else return NotFound(await response.Content.ReadAsStringAsync());
                 // avoid deserialize+reserialize ?? -> return Content(await apiResponse.Content.ReadAsStringAsync(), apiResponse.Content.Headers.ContentType.MediaType);
             }
+        }
+
+        private int? GetLoggedId()
+        {
+            var UserId = User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+            if (UserId == null || !int.TryParse(UserId, out int id)) return null;
+            return id;
         }
     }
 }

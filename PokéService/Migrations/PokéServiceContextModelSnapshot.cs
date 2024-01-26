@@ -26,6 +26,9 @@ namespace PokéService.Migrations
                     b.Property<string>("Cards")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("CardsCollection");

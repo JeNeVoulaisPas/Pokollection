@@ -1,6 +1,6 @@
 ﻿@page "/account"
 @inject NavigationManager NavigationManager
-@inject DeleteService deleteService
+@inject UserService userService
 @inject AuthenticationStateProvider authStateProvider
 @using System.Security.Claims
 
@@ -24,11 +24,9 @@
 @code {
     private async Task HandleSuppression()
     {
-
-        deleteService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider);
-
         // Appeler la méthode DeleteAccount en passant l'ID de l'utilisateur
-        var result = await deleteService.DeleteAccount();
+        var result = await userService.DeleteAccount();
+
         //await deleteService.Logout();
         NavigationManager.NavigateTo("/login");
 

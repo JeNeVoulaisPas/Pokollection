@@ -1,33 +1,63 @@
-﻿@page "/friend/{code:int}"
+﻿@page "/friend/{username}"
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider authStateProvider
 @inject PokémonService pokémonService
 @using System.Security.Claims;
-@using PokéService.Entities;
+@using Front.Entities;
 @using Front.Components.Widget;
 
 
-<PageTitle>Collection d'Amis</PageTitle>
+@if (username != null)
+{
+	<PageTitle>Collection de @(username)</PageTitle>
 
-<div class="titleBanner">
-    <img src="images/Collection.png" alt="Collection Image">
-</div>
+	<div class="titleBanner">
+		<img src="images/Collection.png" alt="Collection Image">
+	</div>
 
-<SearchGrid Searcher="Searcher"/>
+	<SearchGrid Searcher="Searcher"/>
+}
+else
+{
+	<PageTitle>Collection d'Amis</PageTitle>
+	<div class="titleBanner">
+		<img src="images/Collections.png" alt="Collections Image">
+	</div>
+
+	<h1> Découvre les collections de tes amis !!!</h1>
+
+	<InputText @bind-Value="Pseudo" class="form-control" placeholder="Entre le pseudo de tes Amis" />
+	@if (Error)
+	{
+		<div class="alert alert-danger" role="alert">
+			Le code Amis n'existe pas !
+		</div>
+	}
+
+	<button type="button" class="btn btn-primary" @onclick="OnSearch">
+		<span class="bi bi-person" aria-hidden="true"></span> Chercher
+	</button>
+}
+
 
 @code {
-    [Parameter] public int? code { get; set; }
+	[Parameter] public string? username { get; set; }
 
-    public void OnGet(int code)
-    {
-        this.code = code;
-    }
+	private string Pseudo { get; set; } = "";
+
+	private bool Error { get; set; }
+
+
+	public async Task OnSearch()
+	{
+		Error = false;
+		if (await pokémonService.IsExists(Pseudo)) username = Pseudo;
+		else Error = true;
+	}
+
 
     public async Task<IEnumerable<Pokémon>?> Searcher(string query)
     {
-        pokémonService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider); // ensure manual injection of authStateProvider
-        var p = await pokémonService.GetCollection(query, code);
-        if (p is null) NavigationManager.NavigateTo($"/friend?code={code}&type=error");
-        return p;
+        return await pokémonService.GetCollection(query, username);
     }
 }

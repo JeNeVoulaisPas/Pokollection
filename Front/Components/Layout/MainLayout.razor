@@ -1,7 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-@inject AuthenticationStateProvider authStateProvider
-@inject DeleteService deleteService
+@inject UserService userService
 
 <div class="page">
     <div class="sidebar">
@@ -38,9 +37,9 @@
 
     private async void Logout()
     {
-        deleteService.SetAuthenticator((CustomAuthenticationStateProvider)authStateProvider);
         // Kill the session
-        await deleteService.Logout();
+        await userService.Logout();
+
         // Redirect the user to the login page
         NavigationManager.NavigateTo("/login");
     }

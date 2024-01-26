@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace PokéService.Entities
@@ -13,22 +10,10 @@ namespace PokéService.Entities
         Trainer = 2
     }
 
-    public class CardsCollection
-    {
-        [Key]
-        public required int Id { get; set; }
-
-        public virtual string? Cards { get; set; }  // Ids of the cards joined by \n
-
-        [NotMapped]
-        public virtual string[]? CardsArray { get => Cards?.Split('\n'); }
-    }
-
 
     public class Pokémon
     {
         // Mandatory
-        [Key]
         public required string Id { get; set; }
 
         public required Categories Category { get; set; }
@@ -49,6 +34,8 @@ namespace PokéService.Entities
 
         public required string Illustrator { get; set; }
 
+		[NotMapped]
+		public bool Possessed { get; set; } = false; // true if the card is in the user's collection
 
         // Pokémon Category Mandatory
 
@@ -56,9 +43,6 @@ namespace PokéService.Entities
 
         [NotMapped]
         public string[]? TypesArray { get => Types?.Split('\n'); }
-
-		[NotMapped]
-		public bool Possessed { get; set; } = false; // true if the card is in the user's collection
 
 
 		// Pokémon Category Optional
@@ -116,18 +100,12 @@ namespace PokéService.Entities
 
     public class Item
     {
-        /*[Key]
-        public Int64 Id { get; set; }*/
-
         public required string Name { get; set; }
-
         public required string Effect { get; set; }
     }
 
     public class Resistance
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int64 Id { get; set; }
 
         public required string Type { get; set; }
@@ -137,8 +115,6 @@ namespace PokéService.Entities
 
     public class Weakness
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int64 Id { get; set; }
 
         public required string Type { get; set; }
@@ -148,8 +124,6 @@ namespace PokéService.Entities
 
     public class Attack
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int64 Id { get; set; }
         public string? Name { get; set; }
         public string? Cost { get; set; }  // e.g.: "Feu\nEau\nEau"...
@@ -162,8 +136,6 @@ namespace PokéService.Entities
 
     public class Ability
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Int64 Id { get; set; }
 
         public string? Name { get; set; }

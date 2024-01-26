@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using PokéService.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -13,18 +12,13 @@ namespace Front.Services
     public class PokémonService: AuthService
     {
 
-        public PokémonService(HttpClient httpClient) : base(httpClient) { }
-
-        public async Task<int?> GetUserIdAsync()
+        public PokémonService(HttpClient httpClient, AuthenticationStateProvider customAuthenticationStateProvider) : base(httpClient, customAuthenticationStateProvider)
         {
-			return (_auth == null)? null: await _auth.GetAuthenticationIdAsync();
-		}
+        }
+
 
         public async Task<Pokémon?> GetPokémon(string id)
 		{
-			var uid = await GetUserIdAsync();
-			if (uid is not null) id += $"?id={uid}";
-
 			var res = await _httpClient.GetAsync($"api/Poké/card/{id}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<Pokémon>();
@@ -33,38 +27,52 @@ namespace Front.Services
 
         public async Task<IEnumerable<Pokémon>?> Search(string query = "")
 		{
-			var id = await GetUserIdAsync();
-            if (id is not null)
-            {
-                if (query.Length > 0) query += "&";
-                else query = "?";
-                query += $"id={id}";
-            }
 			var res = await _httpClient.GetAsync($"api/Poké/search{query}");
 
             if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
             return null;
         }
 
-        public async Task<IEnumerable<Pokémon>?> GetCollection(string query = "", int? id = null)
+        public async Task<IEnumerable<Pokémon>?> GetCollection(string query = "", string? pseudo = null)
         {
-            if (id is null) id = await GetUserIdAsync();
-            if (id is null) return null;
+            
+            var res = (pseudo is null) ?
+				await _httpClient.GetAsync($"api/Poké/collection/card{query}"):
+			    await _httpClient.GetAsync($"api/Poké/collection/from/{pseudo}{query}");
 
-            var res = await _httpClient.GetAsync($"api/Poké/collection/{id}/card{query}");
-
-            if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
+			if (res.IsSuccessStatusCode) return await res.Content.ReadFromJsonAsync<IEnumerable<Pokémon>>();
             return null;
         }
 
-        public async Task<bool> AddCard(string cid)
+        public async Task<bool> IsExists(string name)
         {
-            var res = await _httpClient.PostAsync($"api/Poké/collection/card/{cid}", null);
+            var res = await _httpClient.GetAsync($"api/User/exists/{name}");
 
             return res.IsSuccessStatusCode;
         }
 
-        public async Task<bool> DeleteCard(string cid)
+        public async Task<bool> IsPublic()
+        {
+            var res = await _httpClient.GetAsync($"api/Poké/collection/public");
+
+            return res.IsSuccessStatusCode && await res.Content.ReadFromJsonAsync<bool>();
+        }
+
+        public async Task<bool> SetProtection(bool isPublic)
+		{
+			var res = await _httpClient.PostAsJsonAsync($"api/Poké/collection/public", isPublic);
+
+			return res.IsSuccessStatusCode;
+		}
+
+		public async Task<bool> AddCard(string cid)
+		{
+			var res = await _httpClient.PostAsync($"api/Poké/collection/card/{cid}", null);
+
+			return res.IsSuccessStatusCode;
+		}
+
+		public async Task<bool> DeleteCard(string cid)
         {
             var res = await _httpClient.DeleteAsync($"api/Poké/collection/card/{cid}");
 
