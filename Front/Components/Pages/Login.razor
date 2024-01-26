@@ -21,7 +21,7 @@
                 <input @bind-value="userLogin.UsernameOrEmail" placeholder="Sacha" class="@(String.IsNullOrEmpty(errorMessage) ? "form-control": "form-control is-invalid")"/>
             </label>
             <label class="form-label">
-                Email ou pseudo
+                Mot de passe
                 <input id="Pwd" @bind-value="userLogin.Pass" type="password" placeholder="Mot de passe" class="@(String.IsNullOrEmpty(errorMessage) ? "form-control": "form-control is-invalid")" />
                 @if (!string.IsNullOrEmpty(errorMessage))
                 {
